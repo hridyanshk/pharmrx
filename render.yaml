@@ -3,7 +3,7 @@ services:
     name: pharmrx
     runtime: node
     plan: free
-    buildCommand: npm --prefix backend ci && npm --prefix frontend ci && npm --prefix frontend run build
+    buildCommand: npm --prefix backend ci && npm --prefix frontend ci --legacy-peer-deps && npm --prefix frontend run build
     startCommand: npm --prefix backend run setup && npm --prefix backend start
     healthCheckPath: /health
     envVars:
