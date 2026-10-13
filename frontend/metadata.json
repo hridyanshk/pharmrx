@@ -1,0 +1,8 @@
+{
+  "name": "Remix PharmRx - Clinical Pharmacy OS",
+  "description": "Enterprise pharmacy operating system for managing clinical formulary, real-time inventory, prescriptions, patient records, and dispensing workflows.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
