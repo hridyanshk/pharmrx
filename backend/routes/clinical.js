@@ -1,12 +1,13 @@
 const express=require('express');const bcrypt=require('bcryptjs');const jwt=require('jsonwebtoken');
-const db=require('../config/db');const {fail,integer,decimal,required,date,choice,uniqueItems,totals}=require('../domain');
+const pool=require('../config/db');const actionHistory=require('../action-history');const db=actionHistory.scopedDb(pool);const {fail,integer,decimal,required,date,choice,uniqueItems,totals}=require('../domain');
 const router=express.Router();const attempts=new Map();
+for(const method of ['post','put','patch','delete']){const register=router[method].bind(router);router[method]=(path,handler)=>register(path,actionHistory.wrap(pool,handler));}
 const staff=(req)=>{if(!['admin','pharmacist'].includes(req.user.role))fail('Pharmacist or administrator access required.',403);};
 const clinician=(req)=>{if(!['admin','doctor','pharmacist'].includes(req.user.role))fail('Staff access required.',403);};
 const admin=(req)=>{if(req.user.role!=='admin')fail('Administrator access required.',403);};
 const rows=async(q,args=[],c=db)=>(await c.query(q,args))[0];
 const one=async(q,args=[],c=db)=>(await rows(q,args,c))[0];
-const txn=async(fn)=>{const c=await db.getConnection();try{await c.query('SET TRANSACTION ISOLATION LEVEL READ COMMITTED');await c.beginTransaction();const value=await fn(c);await c.commit();return value;}catch(e){await c.rollback();throw e;}finally{c.release();}};
+const txn=async(fn)=>{const active=actionHistory.connection();if(active)return fn(active);const c=await db.getConnection();try{await c.query('SET TRANSACTION ISOLATION LEVEL READ COMMITTED');await c.beginTransaction();const value=await fn(c);await c.commit();return value;}catch(e){await c.rollback();throw e;}finally{c.release();}};
 const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 async function ownPatient(req,id,c=db){id=integer(id,'Patient');const p=await one('SELECT * FROM rx_patients WHERE id=?',[id],c);if(!p)fail('Patient not found.',404);if(req.user.role==='patient'&&p.user_id!==req.user.id)fail('You can only access your own records.',403);return p;}
 async function pharmacist(req,c=db){staff(req);const p=await one('SELECT id FROM rx_pharmacists WHERE user_id=?',[req.user.id],c);if(!p)fail('No pharmacist profile is linked to this account.',403);return p.id;}
@@ -47,8 +48,18 @@ router.get('/bootstrap',async(req,res)=>{
  data.orderItems=await rows('SELECT i.*,m.brand_name medicine_name FROM rx_purchase_order_items i JOIN rx_medicines m ON m.id=i.medicine_id');
  data.stockQueue=await rows('SELECT * FROM View_Verification_Stock_Queue');}
  if(req.user.role==='admin')data.accounts=await rows('SELECT id,name,email,role FROM users ORDER BY id');
+ data.actions=await actionHistory.history(pool,req.user);
  res.json(data);
 });
+router.get('/history',async(req,res)=>res.json(await actionHistory.history(pool,req.user,req.query.before?integer(req.query.before,'Earlier action'):undefined)));
+router.patch('/prescriptions/:id/unreview',async(req,res)=>{staff(req);await txn(async c=>{
+ const p=await one('SELECT * FROM rx_prescriptions WHERE id=? FOR UPDATE',[integer(req.params.id,'Prescription')],c);
+ if(!p)fail('Prescription not found.',404);if(p.status!=='In Filling')fail('Only reviewed, undispensed prescriptions can return to pending review.',409);
+ const invoice=await one('SELECT id FROM rx_invoices WHERE prescription_id=?',[p.id],c);if(invoice)fail('Undo the dispensing transaction first.',409);
+ const verification=await one("SELECT id FROM rx_verifications WHERE prescription_id=? AND verification_status='Verified'",[p.id],c);if(verification)fail('This prescription has a verified upload. Undo its verification in History first.',409);
+ await c.query("UPDATE rx_prescriptions SET status='Pending Review' WHERE id=?",[p.id]);
+ });res.json({ok:true});});
+router.post('/undo/:id',async(req,res)=>res.json(await actionHistory.undo(pool,req.user,integer(req.params.id,'Saved action'))));
 const resources={
  medicines:{table:'rx_medicines',validate:b=>({brand_name:required(b.brand_name,'Medicine name'),generic_name:b.generic_name||'',hsn_code:b.hsn_code||'',schedule_type:choice(b.schedule_type,['OTC','Schedule H','Schedule H1','Schedule X'],'schedule'),tax_rate:decimal(b.tax_rate,'Tax rate',0,100),reorder_level:integer(b.reorder_level,'Reorder level',0)}),access:staff},
  suppliers:{table:'rx_suppliers',validate:b=>({company_name:required(b.company_name,'Supplier name'),gstin:b.gstin||'',phone:b.phone||''}),access:staff},
@@ -102,7 +113,7 @@ async function prepare(c,b,req,locked=false){staff(req);const pid=integer(b.pres
  const alerts=await safety(c,p.patient_id,meds);return {prescription:p,patient,items:meds,alerts,totals:totals(meds),verification_id:verification?.id};}
 router.post('/pos/preview',async(req,res)=>{res.json(await prepare(db,req.body,req));});
 router.post('/pos/checkout',async(req,res)=>{const ph=await pharmacist(req);const requestId=required(req.body.request_id,'Checkout request ID',80);const result=await txn(async c=>{await c.query('SELECT id FROM rx_prescriptions WHERE id=? FOR UPDATE',[integer(req.body.prescription_id,'Prescription')]);const prior=await one('SELECT id,net_payable,prescription_id FROM rx_invoices WHERE request_id=?',[requestId],c);if(prior){if(prior.prescription_id!==Number(req.body.prescription_id))fail('Checkout request ID was already used for another prescription.',409);const old=await rows('SELECT batch_id,qty_sold quantity FROM rx_invoice_items WHERE invoice_id=? ORDER BY batch_id',[prior.id],c);const incoming=(req.body.items||[]).map(i=>({batch_id:Number(i.batch_id),quantity:Number(i.quantity)})).sort((a,b)=>a.batch_id-b.batch_id);if(JSON.stringify(old)!==JSON.stringify(incoming))fail('Checkout request ID was already used with different batch quantities.',409);return {...prior,replayed:true};}const p=await prepare(c,req.body,req,true);
- if(p.alerts.some(a=>a.severity==='CRITICAL'))fail('A critical configured safety rule blocks dispensing.',400,'SAFETY_TRIGGER_VIOLATION');const reason=p.alerts.length?required(req.body.override_reason,'Acknowledgement reason for warnings',3000):null;
+ if(p.alerts.some(a=>a.severity==='CRITICAL'))fail('A critical configured safety rule blocks dispensing.',400,'SAFETY_TRIGGER_VIOLATION');const reason=p.alerts.length||req.body.special_case===true?required(req.body.override_reason,'Special-case review notes',3000):req.body.override_reason?required(req.body.override_reason,'Review notes',3000):null;
  const [[installed]]=await c.query("SELECT COUNT(*) n FROM information_schema.TRIGGERS WHERE TRIGGER_SCHEMA=DATABASE() AND TRIGGER_NAME='Before_Invoice_Item_Insert_Check_Athlete'");if(!installed.n)fail('Database dispensing trigger is not installed. Run install-db-routines.sql.',503);
  const t=p.totals;const [inv]=await c.query('INSERT INTO rx_invoices(patient_id,pharmacist_id,prescription_id,request_id,subtotal,cgst,sgst,net_payable,override_reason) VALUES(?,?,?,?,?,?,?,?,?)',[p.patient.id,ph,p.prescription.id,requestId,t.subtotal/100,t.cgst/100,t.sgst/100,t.net_payable/100,reason]);
  for(const i of p.items){await c.query('INSERT INTO rx_invoice_items(invoice_id,batch_id,qty_sold,unit_price,tax_rate,medicine_name,batch_number) VALUES(?,?,?,?,?,?,?)',[inv.insertId,i.batch_id,i.quantity,i.unit_price,i.tax_rate,i.medicine_name,i.batch_number]);const [r]=await c.query('UPDATE rx_batches SET stock_qty=stock_qty-? WHERE id=? AND stock_qty>=?',[i.quantity,i.batch_id,i.quantity]);if(!r.affectedRows)fail('Stock changed. Refresh checkout.');}

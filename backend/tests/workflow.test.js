@@ -6,8 +6,8 @@ test('validation and tax rounding reject malformed quantities and dates',()=>{
 });
 test('complete relational workflow and permission boundaries',{timeout:45000},async t=>{
  const server=app.listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));const base=`http://127.0.0.1:${server.address().port}/api/clinical`;
- const tag='TEST-'+randomUUID();let tokens={};let medicineIds=[],patientId,rxIds=[],orderId,uploadId;
- async function request(path,method='GET',body,role='admin',expected=200){const r=await fetch(base+path,{method,headers:{'Content-Type':'application/json',...(tokens[role]?{Authorization:`Bearer ${tokens[role]}`}:{})},...(body!==undefined?{body:JSON.stringify(body)}:{})});const result=await r.json();assert.equal(r.status,expected,`${method} ${path}: ${JSON.stringify(result)}`);return result;}
+ const tag='TEST-'+randomUUID();let tokens={};let auditIds=[];let medicineIds=[],patientId,rxIds=[],orderId,uploadId;
+ async function request(path,method='GET',body,role='admin',expected=200){const r=await fetch(base+path,{method,headers:{'Content-Type':'application/json',...(tokens[role]?{Authorization:`Bearer ${tokens[role]}`}:{})},...(body!==undefined?{body:JSON.stringify(body)}:{})});const result=await r.json();if(result.undo)auditIds.push(result.undo.id);assert.equal(r.status,expected,`${method} ${path}: ${JSON.stringify(result)}`);return result;}
  async function record(kind,b,role='admin'){return (await request('/records/'+kind,'POST',b,role,201)).id;}
  try{
  await request('/bootstrap','GET',undefined,'none',401);
@@ -68,6 +68,7 @@ test('complete relational workflow and permission boundaries',{timeout:45000},as
  if(rxIds.length){await db.query('DELETE ii FROM rx_invoice_items ii JOIN rx_invoices i ON i.id=ii.invoice_id WHERE i.prescription_id IN (?)',[rxIds]);await db.query('DELETE FROM rx_invoices WHERE prescription_id IN (?)',[rxIds]);await db.query('DELETE r FROM rx_refills r JOIN rx_prescription_items i ON i.id=r.prescription_item_id WHERE i.prescription_id IN (?)',[rxIds]);await db.query('DELETE FROM rx_checkups WHERE prescription_id IN (?)',[rxIds]);await db.query('DELETE FROM rx_prescription_items WHERE prescription_id IN (?)',[rxIds]);await db.query('DELETE FROM rx_prescriptions WHERE id IN (?)',[rxIds]);}
  if(orderId){await db.query('DELETE FROM rx_purchase_order_items WHERE po_id=?',[orderId]);await db.query('DELETE FROM rx_purchase_orders WHERE id=?',[orderId]);}
  if(medicineIds.length){await db.query('DELETE im FROM rx_interaction_medicines im WHERE medicine_id IN (?)',[medicineIds]);await db.query('DELETE FROM rx_interaction_rules WHERE rule_name=?',[tag]);for(const table of ['rx_allergies','rx_instructions','rx_sports_restrictions','rx_dosage_limits'])await db.query(`DELETE FROM ${table} WHERE medicine_id IN (?)`,[medicineIds]);await db.query('DELETE a FROM rx_stock_adjustments a JOIN rx_batches b ON b.id=a.batch_id WHERE b.medicine_id IN (?)',[medicineIds]);await db.query('DELETE FROM rx_batches WHERE medicine_id IN (?)',[medicineIds]);await db.query('DELETE FROM rx_medicines WHERE id IN (?)',[medicineIds]);}
+ if(auditIds.length)await db.query('DELETE FROM rx_action_history WHERE id IN (?)',[auditIds]);
  if(patientId)await db.query('DELETE FROM rx_patients WHERE id=?',[patientId]);await new Promise(r=>server.close(r));await db.end();
  }
 });

@@ -1,4 +1,10 @@
 -- PharmRx extension schema. Existing assignment tables are left intact.
+CREATE TABLE IF NOT EXISTS rx_action_history (
+ id BIGINT AUTO_INCREMENT PRIMARY KEY, actor_id INT NOT NULL, actor_role VARCHAR(20) NOT NULL,
+ label VARCHAR(150) NOT NULL, method VARCHAR(10) NOT NULL, path VARCHAR(200) NOT NULL,
+ request_key VARCHAR(80), changes JSON NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ undone_at TIMESTAMP NULL, INDEX(actor_id,id), INDEX(request_key)
+);
 CREATE TABLE IF NOT EXISTS rx_patients (
  id INT AUTO_INCREMENT PRIMARY KEY, user_id INT UNIQUE, name VARCHAR(150) NOT NULL,
  date_of_birth DATE, phone VARCHAR(30), address TEXT, flag_athlete BOOLEAN NOT NULL DEFAULT FALSE,
