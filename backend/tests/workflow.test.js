@@ -35,6 +35,11 @@ test('complete relational workflow and permission boundaries',{timeout:45000},as
  await request('/pos/checkout','POST',checkout,'pharmacist',400);await request(`/safety/limits/${limit}`,'DELETE');
  const interaction=(await request('/interactions','POST',{rule_name:tag,severity_level:'High',medicine_ids:medicineIds},'admin',201)).id;
  const interactionCheck=await request('/safety/check','POST',{patient_id:patientId,items:medicineIds.map(m=>({medicine_id:m,quantity:1}))});assert.ok(interactionCheck.alerts.some(a=>a.severity==='CRITICAL'));await request(`/safety/interactions/${interaction}`,'DELETE');
+ const incomplete={name:tag,requires_full_profile:true,flag_elderly_care:true};
+ await request(`/records/patients/${patientId}`,'PUT',incomplete);
+ const missingProfile=await request('/pos/preview','POST',checkout,'pharmacist',400);assert.match(missingProfile.error,/full-profile requirement/);
+ await request('/pos/checkout','POST',checkout,'pharmacist',400);
+ await request(`/records/patients/${patientId}`,'PUT',{...incomplete,requires_full_profile:false});
  const good=await request('/pos/preview','POST',checkout,'pharmacist');assert.equal(good.totals.net_payable,6297);
  const concurrent=await Promise.all([1,2].map(()=>fetch(base+'/pos/checkout',{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${tokens.pharmacist}`},body:JSON.stringify(checkout)})));assert.deepEqual(concurrent.map(r=>r.status).sort(),[200,201]);const invoices=await Promise.all(concurrent.map(r=>r.json()));assert.equal(invoices[0].id,invoices[1].id);
  const [[deducted]]=await db.query('SELECT stock_qty FROM rx_batches WHERE id=?',[batchId]);assert.equal(deducted.stock_qty,17);

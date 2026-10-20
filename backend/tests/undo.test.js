@@ -57,7 +57,12 @@ test('saved actions persist in MySQL and undo atomically with ownership and depe
   await undo(upload,'patient');
   const adjustment=await request(`/batches/${batchId}/adjust`,'POST',{stock_qty:12,reason:'Undo test only'},'pharmacist');await undo(adjustment,'pharmacist');
   assert.equal((await query('SELECT stock_qty FROM rx_batches WHERE id=?',[batchId]))[0].stock_qty,30);
-  await undo(batch,'pharmacist');await undo(medicine);await undo(patient);
+  await undo(batch,'pharmacist');await undo(medicine);
+  const [legacy]=await query('SELECT changes FROM rx_action_history WHERE id=?',[patient.undo.id]);
+  const legacyChanges=typeof legacy.changes==='string'?JSON.parse(legacy.changes):legacy.changes;
+  for(const change of legacyChanges)if(change.table==='rx_patients')delete change.after.requires_full_profile;
+  await db.query('UPDATE rx_action_history SET changes=? WHERE id=?',[JSON.stringify(legacyChanges),patient.undo.id]);
+  await undo(patient);
   const history=await request('/history');assert.ok(history.some(a=>a.id===reviewed.undo.id&&a.undone_at),'Undo history survives a new backend read');assert.ok(history.every(a=>!('changes' in a)),'Private undo snapshots never appear in history responses');
  }finally{
   if(uploadId){await db.query('DELETE FROM rx_reservations WHERE verification_id=?',[uploadId]);await db.query('DELETE FROM rx_verifications WHERE id=?',[uploadId]);}

@@ -9,7 +9,7 @@ export function Motif({tile=false, className=''}) {
 /** @param {{compact?: boolean, onClick?: () => void}} props */
 export function ShopSign({compact=false,onClick=undefined}) {
   const Sign=onClick?'button':'div';
-  return <Sign type={onClick?'button':undefined} aria-label={onClick?'Go to Overview':undefined} onClick={onClick} className={`ap-sign ${compact?'compact':''}`}><Motif className="sign-flower left"/><div className="ap-sign-lettering"><span className="ap-wordmark">PHARMRX</span><span className="ap-sign-caption">THE DISPENSARY WORKSPACE</span></div><span className="ap-sign-urdu" lang="ur" dir="rtl">ڈیٹا بیس مینجمنٹ سسٹم</span><Motif className="sign-flower right"/></Sign>;
+  return <Sign type={onClick?'button':undefined} aria-label={onClick?'Go to Home':undefined} onClick={onClick} className={`ap-sign ${compact?'compact':''}`}><Motif className="sign-flower left"/><div className="ap-sign-lettering"><span className="ap-wordmark">PHARMRX</span><span className="ap-sign-caption">PHARMACY WORKSPACE</span></div><Motif className="sign-flower right"/></Sign>;
 }
 
 function DrawerPull({row,onSelect}) {

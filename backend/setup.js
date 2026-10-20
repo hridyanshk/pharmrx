@@ -7,6 +7,8 @@ async function setup(){
   const baseSchema=fs.readFileSync(path.join(__dirname,'../db.sql'),'utf8').replace(/^CREATE DATABASE[^;]*;\s*/im,'').replace(/^USE[^;]*;\s*/im,'');
   await c.query(baseSchema);
   await c.query(fs.readFileSync(path.join(__dirname,'schema.sql'),'utf8'));
+  const [[profileColumn]]=await c.query("SELECT COUNT(*) n FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='rx_patients' AND COLUMN_NAME='requires_full_profile'");
+  if(!profileColumn.n)await c.query('ALTER TABLE rx_patients ADD COLUMN requires_full_profile BOOLEAN NOT NULL DEFAULT FALSE');
   const [[installed]]=await c.query("SELECT COUNT(*) n FROM information_schema.TRIGGERS WHERE TRIGGER_SCHEMA=DATABASE() AND TRIGGER_NAME='Before_Invoice_Item_Insert_Check_Athlete'");
   if(!installed.n) try{
   await c.query('DROP TRIGGER IF EXISTS Before_Invoice_Item_Insert_Check_Athlete');

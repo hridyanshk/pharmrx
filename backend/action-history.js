@@ -16,11 +16,14 @@ const connection=()=>context.getStore()?.connection;
 function scopedDb(pool){return new Proxy(pool,{get(target,key){if(key==='query'||key==='execute')return (...args)=>(connection()||target)[key](...args);const value=target[key];return typeof value==='function'?value.bind(target):value;}});}
 const stable=value=>Array.isArray(value)?value.map(stable):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(key=>[key,stable(value[key])])):value;
 const canonical=value=>JSON.stringify(stable(value));
+// Older actions predate the optional profile flag. Its default must not invalidate their Undo.
+const comparable=(table,row)=>table==='rx_patients'&&row&&!Object.hasOwn(row,'requires_full_profile')?{...row,requires_full_profile:0}:row;
 async function snapshot(c){const result={};for(const table of tables){const [rows]=await c.query(table==='users'?'SELECT id,name,email,role FROM users':`SELECT * FROM \`${table}\``);result[table]=new Map(rows.map(r=>[r.id,r]));}return result;}
 function differences(before,after){const changes=[];for(const table of tables)for(const id of new Set([...before[table].keys(),...after[table].keys()])){const a=before[table].get(id)||null,b=after[table].get(id)||null;if(canonical(a)!==canonical(b))changes.push({table,id,before:a,after:b});}return changes;}
 const excluded=new Set(['/login','/pos/preview','/safety/check','/undo']);
 const isMutation=(method,path)=>['POST','PUT','PATCH','DELETE'].includes(method)&&!excluded.has(path)&&!path.startsWith('/undo/');
 function labelFor(req){const p=req.path;
+ if(p==='/maintenance/clean-sample-data')return 'Clean sample record labels';
  if(/\/prescriptions\/\d+\/review$/.test(p))return 'Mark prescription reviewed';
  if(/\/prescriptions\/\d+\/unreview$/.test(p))return 'Undo prescription review';
  if(p==='/pos/checkout')return 'Dispense prescription';
@@ -62,7 +65,7 @@ async function undo(pool,user,id){await ensureSchema(pool);return locked(pool,as
  const changes=typeof action.changes==='string'?JSON.parse(action.changes):action.changes;
  for(const change of changes){if(!allowed.has(change.table))throw new Error('Unsupported history table');
  const [[actual]]=await c.query(change.table==='users'?'SELECT id,name,email,role FROM users WHERE id=? FOR UPDATE':`SELECT * FROM \`${change.table}\` WHERE id=? FOR UPDATE`,[change.id]);
- if(canonical(actual||null)!==canonical(change.after))fail('These records changed after this action. Undo the later linked action first, or refresh and review the current records.',409);
+ if(canonical(comparable(change.table,actual||null))!==canonical(comparable(change.table,change.after)))fail('These records changed after this action. Undo the later linked action first, or refresh and review the current records.',409);
  }
  try{
  for(const table of tables)for(const ch of changes.filter(ch=>ch.table===table&&ch.before&&!ch.after))await c.query(`INSERT INTO \`${table}\` SET ?`,[values(ch.before)]);

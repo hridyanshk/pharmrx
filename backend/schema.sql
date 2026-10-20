@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS rx_patients (
  id INT AUTO_INCREMENT PRIMARY KEY, user_id INT UNIQUE, name VARCHAR(150) NOT NULL,
  date_of_birth DATE, phone VARCHAR(30), address TEXT, flag_athlete BOOLEAN NOT NULL DEFAULT FALSE,
  flag_elderly_care BOOLEAN NOT NULL DEFAULT FALSE, flag_high_risk_addiction BOOLEAN NOT NULL DEFAULT FALSE,
+ requires_full_profile BOOLEAN NOT NULL DEFAULT FALSE,
  FOREIGN KEY(user_id) REFERENCES users(id)
 );
 CREATE TABLE IF NOT EXISTS rx_doctors (
