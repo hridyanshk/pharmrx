@@ -26,6 +26,7 @@ import {
 // Core Application Shell
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
+import { LoginPage } from './components/LoginPage';
 import { SplashScreen } from './components/SplashScreen';
 
 // Main Views
@@ -56,7 +57,6 @@ import { GlobalSearchModal } from './components/modals/GlobalSearchModal';
 import { ToastContainer } from './components/common/ToastContainer';
 import { ApiStatusBanner } from './components/common/ApiStatusBanner';
 import { ApiConfigModal } from './components/modals/ApiConfigModal';
-import { SwitchAccountModal } from './components/modals/SwitchAccountModal';
 import {
   fetchMedicines,
   createMedicine,
@@ -79,12 +79,11 @@ import {
 } from './services/api';
 
 export default function App() {
-  // Authentication & Splash State (Login screen removed; defaults directly to Pharma View)
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  // Authentication & Splash State
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSplashLoading, setIsSplashLoading] = useState(false);
-  const [switchViewModalOpen, setSwitchViewModalOpen] = useState(false);
 
-  // Current Logged-in User & Role (Defaults to Pharma View / Doctor role)
+  // Current Logged-in User & Role
   const [currentUser, setCurrentUser] = useState<CurrentUser>({
     id: 'DOC-101',
     role: 'doctor',
@@ -296,8 +295,8 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Instant View Switching Handler
-  const handleSelectRole = (role: UserRole, targetId?: string) => {
+  // Login handler with instant role view opening
+  const handleLogin = (role: UserRole, targetId?: string) => {
     if (role === 'admin') {
       setCurrentUser({
         id: 'ADMIN-001',
@@ -307,36 +306,45 @@ export default function App() {
         subtitle: 'Super Admin • Full Access',
       });
       setCurrentRoute('dashboard');
-      showToast('Switched to Admin View.', 'success');
+      setIsAuthenticated(true);
+      showToast('Signed in as Admin. Full access to all database sections granted.', 'success');
     } else if (role === 'doctor') {
       const doc = doctors.find((d) => d.DoctorID === targetId) || doctors[0];
       setCurrentUser({
-        id: doc ? doc.DoctorID : 'DOC-101',
+        id: doc.DoctorID,
         role: 'doctor',
-        name: doc ? doc.Name : 'Dr. Arjun Mehta',
-        email: doc && doc.email ? doc.email : 'a.mehta@pharmrx-health.com',
-        subtitle: doc ? `${doc.Specialization} Specialist` : 'Chief Cardiologist, MD',
+        name: doc.Name,
+        email: doc.email || `${doc.Name.toLowerCase().replace(/[^a-z]/g, '')}@pharmrx-health.com`,
+        subtitle: `${doc.Specialization} Specialist`,
       });
       setCurrentRoute('dashboard');
-      showToast('Switched to Pharma View.', 'success');
+      setIsAuthenticated(true);
+      showToast(`Signed in successfully as ${doc.Name}.`, 'success');
     } else {
       const pat = patients.find((p) => p.PatientID === targetId) || patients[0];
       setCurrentUser({
-        id: pat ? pat.PatientID : 'PT-1002',
+        id: pat.PatientID,
         role: 'patient',
-        name: pat ? pat.Name : 'Aarav Sharma',
-        email: pat ? `${pat.Name.toLowerCase().replace(/[^a-z]/g, '')}@example.com` : 'aarav.sharma@example.com',
-        subtitle: pat ? `Patient #${pat.PatientID}` : 'Patient #PT-1002',
+        name: pat.Name,
+        email: `${pat.Name.toLowerCase().replace(/[^a-z]/g, '')}@example.com`,
+        subtitle: `Patient #${pat.PatientID}`,
       });
       setCurrentRoute('dashboard');
-      showToast('Switched to Patient View.', 'success');
+      setIsAuthenticated(true);
+      showToast(`Signed in successfully as ${pat.Name}.`, 'success');
     }
   };
 
   const handleSplashComplete = () => {
     setIsSplashLoading(false);
     setIsAuthenticated(true);
-    showToast(`Welcome to ${currentUser.name}'s workspace.`);
+    showToast(`Signed in successfully as ${currentUser.name}.`);
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setCurrentRoute('dashboard');
+    showToast('Signed out of session.', 'info');
   };
 
   // Navigation Titles
@@ -587,6 +595,11 @@ export default function App() {
     (currentUser.role === 'doctor' || currentUser.role === 'admin') &&
     medicines.some((m) => m.StockQty <= (m.safetyThreshold || 30));
 
+  // If not logged in, render Login Page
+  if (!isAuthenticated && !isSplashLoading) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+
   // If splash loading is active
   if (isSplashLoading) {
     return <SplashScreen onComplete={handleSplashComplete} />;
@@ -617,7 +630,7 @@ export default function App() {
           setCurrentRoute(route);
         }}
         hasInventoryAlert={hasInventoryAlert}
-        onOpenSwitchView={() => setSwitchViewModalOpen(true)}
+        onLogout={handleLogout}
         mobileOpen={mobileMenuOpen}
         onCloseMobile={() => setMobileMenuOpen(false)}
         isCollapsed={isSidebarCollapsed}
@@ -649,7 +662,7 @@ export default function App() {
           onToggleTheme={handleToggleTheme}
           currentUser={currentUser}
           onNavigateToProfile={() => setCurrentRoute('profile')}
-          onOpenSwitchView={() => setSwitchViewModalOpen(true)}
+          onLogout={handleLogout}
           apiConnected={apiConnected}
           isSyncingData={isLoadingData}
           onRefreshData={() => loadAllData(true)}
@@ -965,13 +978,6 @@ export default function App() {
         onClose={() => setApiConfigModalOpen(false)}
         onRefreshData={() => loadAllData(true)}
         isDataLoading={isLoadingData}
-      />
-
-      <SwitchAccountModal
-        isOpen={switchViewModalOpen}
-        onClose={() => setSwitchViewModalOpen(false)}
-        currentUser={currentUser}
-        onSelectRole={handleSelectRole}
       />
 
       <GlobalSearchModal
