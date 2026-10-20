@@ -1,5 +1,5 @@
 =============================================================
-REMIX PHARMRX - COMPLETE NEW PC SETUP & MIGRATION GUIDE
+PHARMRX - COMPLETE NEW PC SETUP & MIGRATION GUIDE
 =============================================================
 
 CURRENT APP: See FEATURES.md for the new authenticated workspace,
