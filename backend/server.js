@@ -54,5 +54,6 @@ app.use((err,req,res,next)=>{
 });
 if (require.main === module) app.listen(PORT, process.env.HOST || '0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
+    const checkpointTimer=setInterval(async()=>{try{const db=require('./config/db');const [[user]]=await db.query("SELECT id,role FROM users WHERE role='admin' ORDER BY id LIMIT 1");if(user)await require('./action-history').locked(db,c=>require('./checkpoints').automatic(c,user));}catch(e){console.error('Checkpoint failed:',e.code||e.message);}},60000);checkpointTimer.unref();
 });
 module.exports = app;

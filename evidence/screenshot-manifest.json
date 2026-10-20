@@ -1,0 +1,77 @@
+[
+  {
+    "name": "01-patient-contact-edit",
+    "feature": "Patient contact edit",
+    "sql": "USE remix_pharmrx;\n-- Recorded database observations for API changes and rollback.\nSELECT e.phase,j.`id`,j.`name`,j.`phone`\nFROM rx_demo_evidence e LEFT JOIN JSON_TABLE(e.details,'$[*]' COLUMNS (\n `id` VARCHAR(150) PATH '$.id',\n `name` VARCHAR(150) PATH '$.name',\n `phone` VARCHAR(150) PATH '$.phone'\n)) j ON TRUE WHERE e.feature='Patient contact edit' ORDER BY e.id;\n"
+  },
+  {
+    "name": "02-inventory-stock-adjustment",
+    "feature": "Inventory stock adjustment",
+    "sql": "USE remix_pharmrx;\n-- Recorded database observations for API changes and rollback.\nSELECT e.phase,j.`id`,j.`batch_number`,j.`stock_qty`\nFROM rx_demo_evidence e LEFT JOIN JSON_TABLE(e.details,'$[*]' COLUMNS (\n `id` VARCHAR(150) PATH '$.id',\n `batch_number` VARCHAR(150) PATH '$.batch_number',\n `stock_qty` VARCHAR(150) PATH '$.stock_qty'\n)) j ON TRUE WHERE e.feature='Inventory stock adjustment' ORDER BY e.id;\n"
+  },
+  {
+    "name": "03-review-prescription",
+    "feature": "Review prescription",
+    "sql": "USE remix_pharmrx;\n-- Recorded database observations for API changes and rollback.\nSELECT e.phase,j.`id`,j.`status`\nFROM rx_demo_evidence e LEFT JOIN JSON_TABLE(e.details,'$[*]' COLUMNS (\n `id` VARCHAR(150) PATH '$.id',\n `status` VARCHAR(150) PATH '$.status'\n)) j ON TRUE WHERE e.feature='Review prescription' ORDER BY e.id;\n"
+  },
+  {
+    "name": "04-create-prescription",
+    "feature": "Create prescription",
+    "sql": "USE remix_pharmrx;\n-- Number of saved prescriptions before creation, after creation and after checkpoint rollback.\nSELECT phase,JSON_LENGTH(details) prescription_count,JSON_UNQUOTE(JSON_EXTRACT(details,CONCAT('$[',JSON_LENGTH(details)-1,'].id'))) latest_prescription FROM rx_demo_evidence WHERE feature='Create prescription' ORDER BY id;"
+  },
+  {
+    "name": "05-allergy-warning",
+    "feature": "Allergy warning",
+    "sql": "USE remix_pharmrx;\n-- Recorded database observations for API changes and rollback.\nSELECT e.phase,j.`patient_id`,j.`medicine_id`,j.`severity`\nFROM rx_demo_evidence e LEFT JOIN JSON_TABLE(e.details,'$[*]' COLUMNS (\n `patient_id` VARCHAR(150) PATH '$.patient_id',\n `medicine_id` VARCHAR(150) PATH '$.medicine_id',\n `severity` VARCHAR(150) PATH '$.severity'\n)) j ON TRUE WHERE e.feature='Allergy warning' ORDER BY e.id;\n"
+  },
+  {
+    "name": "06-patient-flag-rule-from-website-api",
+    "feature": "Patient flag rule from website API",
+    "sql": "USE remix_pharmrx;\n-- Recorded database observations for API changes and rollback.\nSELECT e.phase,j.`rule_name`,j.`patient_flag`,j.`severity`\nFROM rx_demo_evidence e LEFT JOIN JSON_TABLE(e.details,'$[*]' COLUMNS (\n `rule_name` VARCHAR(150) PATH '$.rule_name',\n `patient_flag` VARCHAR(150) PATH '$.patient_flag',\n `severity` VARCHAR(150) PATH '$.severity'\n)) j ON TRUE WHERE e.feature='Patient flag rule from website API' ORDER BY e.id;\n"
+  },
+  {
+    "name": "07-rolling-quantity-rule",
+    "feature": "Rolling quantity rule",
+    "sql": "USE remix_pharmrx;\n-- Recorded database observations for API changes and rollback.\nSELECT e.phase,j.`medicine_id`,j.`max_qty_per_30_days`,j.`risk_level`\nFROM rx_demo_evidence e LEFT JOIN JSON_TABLE(e.details,'$[*]' COLUMNS (\n `medicine_id` VARCHAR(150) PATH '$.medicine_id',\n `max_qty_per_30_days` VARCHAR(150) PATH '$.max_qty_per_30_days',\n `risk_level` VARCHAR(150) PATH '$.risk_level'\n)) j ON TRUE WHERE e.feature='Rolling quantity rule' ORDER BY e.id;\n"
+  },
+  {
+    "name": "08-prescription-upload-and-reservation",
+    "feature": "Prescription upload and reservation",
+    "sql": "USE remix_pharmrx;\n-- Recorded database observations for API changes and rollback.\nSELECT e.phase,j.`id`,j.`verification_status`,j.`prescription_id`,j.`batch_id`,j.`quantity`\nFROM rx_demo_evidence e LEFT JOIN JSON_TABLE(e.details,'$[*]' COLUMNS (\n `id` VARCHAR(150) PATH '$.id',\n `verification_status` VARCHAR(150) PATH '$.verification_status',\n `prescription_id` VARCHAR(150) PATH '$.prescription_id',\n `batch_id` VARCHAR(150) PATH '$.batch_id',\n `quantity` VARCHAR(150) PATH '$.quantity'\n)) j ON TRUE WHERE e.feature='Prescription upload and reservation' ORDER BY e.id;\n"
+  },
+  {
+    "name": "09-purchase-order-receipt",
+    "feature": "Purchase order receipt",
+    "sql": "USE remix_pharmrx;\n-- Recorded database observations for API changes and rollback.\nSELECT e.phase,j.`id`,j.`batch_number`,j.`stock_qty`\nFROM rx_demo_evidence e LEFT JOIN JSON_TABLE(e.details,'$[*]' COLUMNS (\n `id` VARCHAR(150) PATH '$.id',\n `batch_number` VARCHAR(150) PATH '$.batch_number',\n `stock_qty` VARCHAR(150) PATH '$.stock_qty'\n)) j ON TRUE WHERE e.feature='Purchase order receipt' ORDER BY e.id;\n"
+  },
+  {
+    "name": "10-refill-reminder",
+    "feature": "Refill reminder",
+    "sql": "USE remix_pharmrx;\n-- Recorded database observations for API changes and rollback.\nSELECT e.phase,j.`id`,j.`prescription_item_id`,j.`next_refill_date`,j.`frequency_days`\nFROM rx_demo_evidence e LEFT JOIN JSON_TABLE(e.details,'$[*]' COLUMNS (\n `id` VARCHAR(150) PATH '$.id',\n `prescription_item_id` VARCHAR(150) PATH '$.prescription_item_id',\n `next_refill_date` VARCHAR(150) PATH '$.next_refill_date',\n `frequency_days` VARCHAR(150) PATH '$.frequency_days'\n)) j ON TRUE WHERE e.feature='Refill reminder' ORDER BY e.id;\n"
+  },
+  {
+    "name": "11-dispense-rx-619",
+    "feature": "Dispense RX-619",
+    "sql": "USE remix_pharmrx;\n-- Recorded database observations for API changes and rollback.\nSELECT e.phase,j.`id`,j.`status`,j.`stock`,j.`stock_qty`,j.`invoice_id`,j.`net_payable`\nFROM rx_demo_evidence e LEFT JOIN JSON_TABLE(e.details,'$[*]' COLUMNS (\n `id` VARCHAR(150) PATH '$.id',\n `status` VARCHAR(150) PATH '$.status',\n `stock` VARCHAR(150) PATH '$.stock',\n `stock_qty` VARCHAR(150) PATH '$.stock_qty',\n `invoice_id` VARCHAR(150) PATH '$.invoice_id',\n `net_payable` VARCHAR(150) PATH '$.net_payable'\n)) j ON TRUE WHERE e.feature='Dispense RX-619' ORDER BY e.id;\n"
+  },
+  {
+    "name": "12-dispense-rx-620",
+    "feature": "Dispense RX-620",
+    "sql": "USE remix_pharmrx;\n-- Recorded database observations for API changes and rollback.\nSELECT e.phase,j.`id`,j.`status`,j.`stock`,j.`stock_qty`,j.`invoice_id`,j.`net_payable`\nFROM rx_demo_evidence e LEFT JOIN JSON_TABLE(e.details,'$[*]' COLUMNS (\n `id` VARCHAR(150) PATH '$.id',\n `status` VARCHAR(150) PATH '$.status',\n `stock` VARCHAR(150) PATH '$.stock',\n `stock_qty` VARCHAR(150) PATH '$.stock_qty',\n `invoice_id` VARCHAR(150) PATH '$.invoice_id',\n `net_payable` VARCHAR(150) PATH '$.net_payable'\n)) j ON TRUE WHERE e.feature='Dispense RX-620' ORDER BY e.id;\n"
+  },
+  {
+    "name": "12-sql-trigger-blocks",
+    "feature": "Direct SQL trigger enforcement",
+    "sql": "USE remix_pharmrx;\n-- Direct SQL attempts bypassed the API; each was rejected with SQLSTATE 45000.\nSELECT feature,phase,\n JSON_UNQUOTE(JSON_EXTRACT(details,'$.sqlState')) AS sql_state,\n JSON_UNQUOTE(JSON_EXTRACT(details,'$.message')) AS database_message\nFROM rx_demo_evidence\nWHERE feature LIKE 'SQL trigger:%' ORDER BY id;"
+  },
+  {
+    "name": "13-final-database-state",
+    "feature": "Final database state",
+    "sql": "USE remix_pharmrx;\nSELECT 'Prescriptions' record_type,COUNT(*) saved FROM rx_prescriptions\nUNION ALL\nSELECT 'Dispensed',COUNT(*) FROM rx_prescriptions WHERE status='Dispensed'\nUNION ALL\nSELECT 'Invoices',COUNT(*) FROM rx_invoices\nUNION ALL\nSELECT 'Medicines',COUNT(*) FROM rx_medicines\nUNION ALL\nSELECT 'Patients',COUNT(*) FROM rx_patients\nUNION ALL\nSELECT 'Safety triggers',COUNT(*) FROM information_schema.TRIGGERS WHERE TRIGGER_SCHEMA=DATABASE() AND TRIGGER_NAME LIKE 'rx_safety_invoice_%';"
+  },
+  {
+    "name": "14-savepoint-rollback",
+    "feature": "Native SQL SAVEPOINT proof",
+    "sql": "USE remix_pharmrx;\nSELECT feature,phase,JSON_UNQUOTE(JSON_EXTRACT(details,'$.changed[0].stock_qty')) changed_stock,JSON_UNQUOTE(JSON_EXTRACT(details,'$.restored[0].stock_qty')) rolled_back_stock FROM rx_demo_evidence WHERE feature='SQL SAVEPOINT';"
+  }
+]

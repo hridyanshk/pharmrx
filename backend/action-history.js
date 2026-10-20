@@ -3,6 +3,7 @@ const {fail}=require('./domain');
 const context=new AsyncLocalStorage();
 // Parent-first order also determines the order used to restore deleted records.
 const tables=['users','rx_patients','rx_doctors','rx_pharmacists','rx_suppliers','rx_medicines','rx_batches','rx_allergies','rx_stock_adjustments','rx_instructions','rx_sports_restrictions','rx_dosage_limits','rx_interaction_rules','rx_interaction_medicines','rx_prescriptions','rx_prescription_items','rx_verifications','rx_reservations','rx_invoices','rx_invoice_items','rx_purchase_orders','rx_purchase_order_items','rx_refills','rx_checkups'];
+tables.splice(tables.indexOf('rx_batches'),0,'rx_medicine_profiles','rx_flag_rules');
 const allowed=new Set(tables);
 let schemaPromise;
 const schema=`CREATE TABLE IF NOT EXISTS rx_action_history (
@@ -20,8 +21,8 @@ const canonical=value=>JSON.stringify(stable(value));
 const comparable=(table,row)=>table==='rx_patients'&&row&&!Object.hasOwn(row,'requires_full_profile')?{...row,requires_full_profile:0}:row;
 async function snapshot(c){const result={};for(const table of tables){const [rows]=await c.query(table==='users'?'SELECT id,name,email,role FROM users':`SELECT * FROM \`${table}\``);result[table]=new Map(rows.map(r=>[r.id,r]));}return result;}
 function differences(before,after){const changes=[];for(const table of tables)for(const id of new Set([...before[table].keys(),...after[table].keys()])){const a=before[table].get(id)||null,b=after[table].get(id)||null;if(canonical(a)!==canonical(b))changes.push({table,id,before:a,after:b});}return changes;}
-const excluded=new Set(['/login','/pos/preview','/safety/check','/undo']);
-const isMutation=(method,path)=>['POST','PUT','PATCH','DELETE'].includes(method)&&!excluded.has(path)&&!path.startsWith('/undo/');
+const excluded=new Set(['/login','/pos/preview','/safety/check','/undo','/checkpoints','/safety/install-triggers']);
+const isMutation=(method,path)=>['POST','PUT','PATCH','DELETE'].includes(method)&&!excluded.has(path)&&!path.startsWith('/undo/')&&!path.startsWith('/checkpoints/');
 function labelFor(req){const p=req.path;
  if(p==='/maintenance/clean-sample-data')return 'Clean sample record labels';
  if(/\/prescriptions\/\d+\/review$/.test(p))return 'Mark prescription reviewed';
@@ -49,9 +50,9 @@ function wrap(pool,handler){return async(req,res)=>{
  res.json=value=>{body=value;called=true;return res;};
  try{const action=await locked(pool,c=>context.run({connection:c},async()=>{
  if(req.path==='/pos/checkout'&&req.body.request_id){const [undone]=await c.query('SELECT id FROM rx_action_history WHERE request_key=? AND undone_at IS NOT NULL LIMIT 1',[req.body.request_id]);if(undone.length)fail('This dispensing request was undone. Open a new dispensing form to try again.',409);}
- const before=await snapshot(c);await handler(req,res);if(!called)throw new Error('Mutation did not return a response');
+ await require('./checkpoints').automatic(c,req.user);const before=await snapshot(c);await handler(req,res);if(!called)throw new Error('Mutation did not return a response');
  const changes=differences(before,await snapshot(c));if(!changes.length)return null;
- const label=labelFor(req);const [saved]=await c.query('INSERT INTO rx_action_history(actor_id,actor_role,label,method,path,request_key,changes) VALUES(?,?,?,?,?,?,?)',[req.user.id,req.user.role,label,req.method,req.path,req.path==='/pos/checkout'?req.body.request_id||null:null,JSON.stringify(changes)]);return {id:saved.insertId,label};
+ const label=labelFor(req);const [saved]=await c.query('INSERT INTO rx_action_history(actor_id,actor_role,label,method,path,request_key,changes) VALUES(?,?,?,?,?,?,?)',[req.user.id,req.user.role,label,req.method,req.path,req.path==='/pos/checkout'?req.body.request_id||null:null,JSON.stringify(changes)]);await require('./checkpoints').automatic(c,req.user);return {id:saved.insertId,label};
  }));res.json=send;return send({...body,...(action?{undo:action}:{})});
  }catch(e){res.json=send;throw e;}
 };}
@@ -76,4 +77,4 @@ async function undo(pool,user,id){await ensureSchema(pool);return locked(pool,as
  if(invalid)fail('Undo would leave more reserved units than available stock. Undo the later allocation first.',409);
  await c.query('UPDATE rx_action_history SET undone_at=CURRENT_TIMESTAMP WHERE id=?',[id]);return {ok:true,id:action.id,label:action.label};
  });}
-module.exports={schema,ensureSchema,scopedDb,connection,wrap,history,undo};
+module.exports={schema,ensureSchema,scopedDb,connection,wrap,history,undo,tables,snapshot,differences,canonical,values,locked};

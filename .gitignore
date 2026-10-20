@@ -6,3 +6,4 @@ node_modules/
 setup-app-user.sql
 *.log
 frontend/dist/
+evidence/before-small-reset-*.json

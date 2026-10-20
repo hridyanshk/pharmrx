@@ -1,0 +1,980 @@
+{
+  "at": "2026-10-20T18:26:24.972Z",
+  "target": "local MySQL",
+  "passed": true,
+  "final": [
+    {
+      "total": 20,
+      "dispensed": "2"
+    }
+  ],
+  "evidence": [
+    {
+      "feature": "Patient contact edit",
+      "phase": "BEFORE",
+      "at": "2026-10-20T18:26:23.906Z",
+      "sql": "SELECT id,name,phone FROM rx_patients WHERE id=?",
+      "args": [
+        252
+      ],
+      "data": [
+        {
+          "id": 252,
+          "name": "Aarav Sharma",
+          "phone": null
+        }
+      ]
+    },
+    {
+      "feature": "Patient contact edit",
+      "phase": "AFTER",
+      "at": "2026-10-20T18:26:23.937Z",
+      "sql": "SELECT id,name,phone FROM rx_patients WHERE id=?",
+      "args": [
+        252
+      ],
+      "data": [
+        {
+          "id": 252,
+          "name": "Aarav Sharma",
+          "phone": "9000000123"
+        }
+      ]
+    },
+    {
+      "feature": "Patient contact edit",
+      "phase": "ROLLED BACK",
+      "at": "2026-10-20T18:26:23.969Z",
+      "sql": "SELECT id,name,phone FROM rx_patients WHERE id=?",
+      "args": [
+        252
+      ],
+      "data": [
+        {
+          "id": 252,
+          "name": "Aarav Sharma",
+          "phone": null
+        }
+      ]
+    },
+    {
+      "feature": "Inventory stock adjustment",
+      "phase": "BEFORE",
+      "at": "2026-10-20T18:26:23.989Z",
+      "sql": "SELECT id,batch_number,stock_qty FROM rx_batches WHERE id=?",
+      "args": [
+        296
+      ],
+      "data": [
+        {
+          "id": 296,
+          "batch_number": "SMALL-158",
+          "stock_qty": 191
+        }
+      ]
+    },
+    {
+      "feature": "Inventory stock adjustment",
+      "phase": "AFTER",
+      "at": "2026-10-20T18:26:24.011Z",
+      "sql": "SELECT id,batch_number,stock_qty FROM rx_batches WHERE id=?",
+      "args": [
+        296
+      ],
+      "data": [
+        {
+          "id": 296,
+          "batch_number": "SMALL-158",
+          "stock_qty": 205
+        }
+      ]
+    },
+    {
+      "feature": "Inventory stock adjustment",
+      "phase": "ROLLED BACK",
+      "at": "2026-10-20T18:26:24.042Z",
+      "sql": "SELECT id,batch_number,stock_qty FROM rx_batches WHERE id=?",
+      "args": [
+        296
+      ],
+      "data": [
+        {
+          "id": 296,
+          "batch_number": "SMALL-158",
+          "stock_qty": 191
+        }
+      ]
+    },
+    {
+      "feature": "Review prescription",
+      "phase": "BEFORE",
+      "at": "2026-10-20T18:26:24.066Z",
+      "sql": "SELECT id,status FROM rx_prescriptions WHERE id=?",
+      "args": [
+        621
+      ],
+      "data": [
+        {
+          "id": 621,
+          "status": "Pending Review"
+        }
+      ]
+    },
+    {
+      "feature": "Review prescription",
+      "phase": "AFTER",
+      "at": "2026-10-20T18:26:24.090Z",
+      "sql": "SELECT id,status FROM rx_prescriptions WHERE id=?",
+      "args": [
+        621
+      ],
+      "data": [
+        {
+          "id": 621,
+          "status": "In Filling"
+        }
+      ]
+    },
+    {
+      "feature": "Review prescription",
+      "phase": "ROLLED BACK",
+      "at": "2026-10-20T18:26:24.124Z",
+      "sql": "SELECT id,status FROM rx_prescriptions WHERE id=?",
+      "args": [
+        621
+      ],
+      "data": [
+        {
+          "id": 621,
+          "status": "Pending Review"
+        }
+      ]
+    },
+    {
+      "feature": "Create prescription",
+      "phase": "BEFORE",
+      "at": "2026-10-20T18:26:24.145Z",
+      "sql": "SELECT id,patient_id,status FROM rx_prescriptions ORDER BY id",
+      "args": [],
+      "data": [
+        {
+          "id": 619,
+          "patient_id": 252,
+          "status": "Dispensed"
+        },
+        {
+          "id": 620,
+          "patient_id": 253,
+          "status": "Dispensed"
+        },
+        {
+          "id": 621,
+          "patient_id": 254,
+          "status": "Pending Review"
+        },
+        {
+          "id": 622,
+          "patient_id": 255,
+          "status": "Pending Review"
+        },
+        {
+          "id": 623,
+          "patient_id": 256,
+          "status": "Pending Review"
+        },
+        {
+          "id": 624,
+          "patient_id": 257,
+          "status": "Pending Review"
+        },
+        {
+          "id": 625,
+          "patient_id": 258,
+          "status": "Pending Review"
+        },
+        {
+          "id": 626,
+          "patient_id": 259,
+          "status": "Pending Review"
+        },
+        {
+          "id": 627,
+          "patient_id": 260,
+          "status": "Pending Review"
+        },
+        {
+          "id": 628,
+          "patient_id": 261,
+          "status": "Pending Review"
+        },
+        {
+          "id": 629,
+          "patient_id": 252,
+          "status": "Pending Review"
+        },
+        {
+          "id": 630,
+          "patient_id": 253,
+          "status": "Pending Review"
+        },
+        {
+          "id": 631,
+          "patient_id": 254,
+          "status": "Pending Review"
+        },
+        {
+          "id": 632,
+          "patient_id": 255,
+          "status": "Pending Review"
+        },
+        {
+          "id": 633,
+          "patient_id": 256,
+          "status": "Pending Review"
+        },
+        {
+          "id": 634,
+          "patient_id": 257,
+          "status": "Pending Review"
+        },
+        {
+          "id": 635,
+          "patient_id": 258,
+          "status": "Pending Review"
+        },
+        {
+          "id": 636,
+          "patient_id": 259,
+          "status": "Pending Review"
+        },
+        {
+          "id": 637,
+          "patient_id": 260,
+          "status": "Pending Review"
+        },
+        {
+          "id": 638,
+          "patient_id": 261,
+          "status": "Pending Review"
+        }
+      ]
+    },
+    {
+      "feature": "Create prescription",
+      "phase": "AFTER",
+      "at": "2026-10-20T18:26:24.168Z",
+      "sql": "SELECT id,patient_id,status FROM rx_prescriptions ORDER BY id",
+      "args": [],
+      "data": [
+        {
+          "id": 619,
+          "patient_id": 252,
+          "status": "Dispensed"
+        },
+        {
+          "id": 620,
+          "patient_id": 253,
+          "status": "Dispensed"
+        },
+        {
+          "id": 621,
+          "patient_id": 254,
+          "status": "Pending Review"
+        },
+        {
+          "id": 622,
+          "patient_id": 255,
+          "status": "Pending Review"
+        },
+        {
+          "id": 623,
+          "patient_id": 256,
+          "status": "Pending Review"
+        },
+        {
+          "id": 624,
+          "patient_id": 257,
+          "status": "Pending Review"
+        },
+        {
+          "id": 625,
+          "patient_id": 258,
+          "status": "Pending Review"
+        },
+        {
+          "id": 626,
+          "patient_id": 259,
+          "status": "Pending Review"
+        },
+        {
+          "id": 627,
+          "patient_id": 260,
+          "status": "Pending Review"
+        },
+        {
+          "id": 628,
+          "patient_id": 261,
+          "status": "Pending Review"
+        },
+        {
+          "id": 629,
+          "patient_id": 252,
+          "status": "Pending Review"
+        },
+        {
+          "id": 630,
+          "patient_id": 253,
+          "status": "Pending Review"
+        },
+        {
+          "id": 631,
+          "patient_id": 254,
+          "status": "Pending Review"
+        },
+        {
+          "id": 632,
+          "patient_id": 255,
+          "status": "Pending Review"
+        },
+        {
+          "id": 633,
+          "patient_id": 256,
+          "status": "Pending Review"
+        },
+        {
+          "id": 634,
+          "patient_id": 257,
+          "status": "Pending Review"
+        },
+        {
+          "id": 635,
+          "patient_id": 258,
+          "status": "Pending Review"
+        },
+        {
+          "id": 636,
+          "patient_id": 259,
+          "status": "Pending Review"
+        },
+        {
+          "id": 637,
+          "patient_id": 260,
+          "status": "Pending Review"
+        },
+        {
+          "id": 638,
+          "patient_id": 261,
+          "status": "Pending Review"
+        },
+        {
+          "id": 664,
+          "patient_id": 252,
+          "status": "Pending Review"
+        }
+      ]
+    },
+    {
+      "feature": "Create prescription",
+      "phase": "ROLLED BACK",
+      "at": "2026-10-20T18:26:24.196Z",
+      "sql": "SELECT id,patient_id,status FROM rx_prescriptions ORDER BY id",
+      "args": [],
+      "data": [
+        {
+          "id": 619,
+          "patient_id": 252,
+          "status": "Dispensed"
+        },
+        {
+          "id": 620,
+          "patient_id": 253,
+          "status": "Dispensed"
+        },
+        {
+          "id": 621,
+          "patient_id": 254,
+          "status": "Pending Review"
+        },
+        {
+          "id": 622,
+          "patient_id": 255,
+          "status": "Pending Review"
+        },
+        {
+          "id": 623,
+          "patient_id": 256,
+          "status": "Pending Review"
+        },
+        {
+          "id": 624,
+          "patient_id": 257,
+          "status": "Pending Review"
+        },
+        {
+          "id": 625,
+          "patient_id": 258,
+          "status": "Pending Review"
+        },
+        {
+          "id": 626,
+          "patient_id": 259,
+          "status": "Pending Review"
+        },
+        {
+          "id": 627,
+          "patient_id": 260,
+          "status": "Pending Review"
+        },
+        {
+          "id": 628,
+          "patient_id": 261,
+          "status": "Pending Review"
+        },
+        {
+          "id": 629,
+          "patient_id": 252,
+          "status": "Pending Review"
+        },
+        {
+          "id": 630,
+          "patient_id": 253,
+          "status": "Pending Review"
+        },
+        {
+          "id": 631,
+          "patient_id": 254,
+          "status": "Pending Review"
+        },
+        {
+          "id": 632,
+          "patient_id": 255,
+          "status": "Pending Review"
+        },
+        {
+          "id": 633,
+          "patient_id": 256,
+          "status": "Pending Review"
+        },
+        {
+          "id": 634,
+          "patient_id": 257,
+          "status": "Pending Review"
+        },
+        {
+          "id": 635,
+          "patient_id": 258,
+          "status": "Pending Review"
+        },
+        {
+          "id": 636,
+          "patient_id": 259,
+          "status": "Pending Review"
+        },
+        {
+          "id": 637,
+          "patient_id": 260,
+          "status": "Pending Review"
+        },
+        {
+          "id": 638,
+          "patient_id": 261,
+          "status": "Pending Review"
+        }
+      ]
+    },
+    {
+      "feature": "Allergy warning",
+      "phase": "BEFORE",
+      "at": "2026-10-20T18:26:24.221Z",
+      "sql": "SELECT patient_id,medicine_id,severity FROM rx_allergies",
+      "args": [],
+      "data": [
+        {
+          "patient_id": 254,
+          "medicine_id": 159,
+          "severity": "Severe"
+        }
+      ]
+    },
+    {
+      "feature": "Allergy warning",
+      "phase": "AFTER",
+      "at": "2026-10-20T18:26:24.266Z",
+      "sql": "SELECT patient_id,medicine_id,severity FROM rx_allergies",
+      "args": [],
+      "data": [
+        {
+          "patient_id": 254,
+          "medicine_id": 159,
+          "severity": "Severe"
+        },
+        {
+          "patient_id": 252,
+          "medicine_id": 158,
+          "severity": "Severe"
+        }
+      ]
+    },
+    {
+      "feature": "Allergy warning",
+      "phase": "ROLLED BACK",
+      "at": "2026-10-20T18:26:24.317Z",
+      "sql": "SELECT patient_id,medicine_id,severity FROM rx_allergies",
+      "args": [],
+      "data": [
+        {
+          "patient_id": 254,
+          "medicine_id": 159,
+          "severity": "Severe"
+        }
+      ]
+    },
+    {
+      "feature": "Patient flag rule from website API",
+      "phase": "BEFORE",
+      "at": "2026-10-20T18:26:24.334Z",
+      "sql": "SELECT rule_name,patient_flag,severity FROM rx_flag_rules",
+      "args": [],
+      "data": [
+        {
+          "rule_name": "Care plan review: flag_athlete",
+          "patient_flag": "flag_athlete",
+          "severity": "HIGH"
+        },
+        {
+          "rule_name": "Care plan review: flag_elderly_care",
+          "patient_flag": "flag_elderly_care",
+          "severity": "HIGH"
+        },
+        {
+          "rule_name": "Care plan review: flag_high_risk_addiction",
+          "patient_flag": "flag_high_risk_addiction",
+          "severity": "HIGH"
+        }
+      ]
+    },
+    {
+      "feature": "Patient flag rule from website API",
+      "phase": "AFTER",
+      "at": "2026-10-20T18:26:24.404Z",
+      "sql": "SELECT rule_name,patient_flag,severity FROM rx_flag_rules",
+      "args": [],
+      "data": [
+        {
+          "rule_name": "Care plan review: flag_athlete",
+          "patient_flag": "flag_athlete",
+          "severity": "HIGH"
+        },
+        {
+          "rule_name": "Care plan review: flag_elderly_care",
+          "patient_flag": "flag_elderly_care",
+          "severity": "HIGH"
+        },
+        {
+          "rule_name": "Care plan review: flag_high_risk_addiction",
+          "patient_flag": "flag_high_risk_addiction",
+          "severity": "HIGH"
+        },
+        {
+          "rule_name": "High risk review",
+          "patient_flag": "flag_high_risk_addiction",
+          "severity": "CRITICAL"
+        }
+      ]
+    },
+    {
+      "feature": "Patient flag rule from website API",
+      "phase": "ROLLED BACK",
+      "at": "2026-10-20T18:26:24.433Z",
+      "sql": "SELECT rule_name,patient_flag,severity FROM rx_flag_rules",
+      "args": [],
+      "data": [
+        {
+          "rule_name": "Care plan review: flag_athlete",
+          "patient_flag": "flag_athlete",
+          "severity": "HIGH"
+        },
+        {
+          "rule_name": "Care plan review: flag_elderly_care",
+          "patient_flag": "flag_elderly_care",
+          "severity": "HIGH"
+        },
+        {
+          "rule_name": "Care plan review: flag_high_risk_addiction",
+          "patient_flag": "flag_high_risk_addiction",
+          "severity": "HIGH"
+        }
+      ]
+    },
+    {
+      "feature": "Rolling quantity rule",
+      "phase": "BEFORE",
+      "at": "2026-10-20T18:26:24.455Z",
+      "sql": "SELECT medicine_id,max_qty_per_30_days,risk_level FROM rx_dosage_limits",
+      "args": [],
+      "data": []
+    },
+    {
+      "feature": "Rolling quantity rule",
+      "phase": "AFTER",
+      "at": "2026-10-20T18:26:24.478Z",
+      "sql": "SELECT medicine_id,max_qty_per_30_days,risk_level FROM rx_dosage_limits",
+      "args": [],
+      "data": [
+        {
+          "medicine_id": 158,
+          "max_qty_per_30_days": 2,
+          "risk_level": "Controlled"
+        }
+      ]
+    },
+    {
+      "feature": "Rolling quantity rule",
+      "phase": "ROLLED BACK",
+      "at": "2026-10-20T18:26:24.509Z",
+      "sql": "SELECT medicine_id,max_qty_per_30_days,risk_level FROM rx_dosage_limits",
+      "args": [],
+      "data": []
+    },
+    {
+      "feature": "Prescription upload and reservation",
+      "phase": "BEFORE",
+      "at": "2026-10-20T18:26:24.533Z",
+      "sql": "SELECT v.id,v.verification_status,v.prescription_id,r.batch_id,r.quantity FROM rx_verifications v LEFT JOIN rx_reservations r ON r.verification_id=v.id",
+      "args": [],
+      "data": []
+    },
+    {
+      "feature": "Prescription upload and reservation",
+      "phase": "AFTER",
+      "at": "2026-10-20T18:26:24.607Z",
+      "sql": "SELECT v.id,v.verification_status,v.prescription_id,r.batch_id,r.quantity FROM rx_verifications v LEFT JOIN rx_reservations r ON r.verification_id=v.id",
+      "args": [],
+      "data": [
+        {
+          "id": 37,
+          "verification_status": "Verified",
+          "prescription_id": 665,
+          "batch_id": 296,
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "feature": "Prescription upload and reservation",
+      "phase": "ROLLED BACK",
+      "at": "2026-10-20T18:26:24.648Z",
+      "sql": "SELECT v.id,v.verification_status,v.prescription_id,r.batch_id,r.quantity FROM rx_verifications v LEFT JOIN rx_reservations r ON r.verification_id=v.id",
+      "args": [],
+      "data": []
+    },
+    {
+      "feature": "Purchase order receipt",
+      "phase": "BEFORE",
+      "at": "2026-10-20T18:26:24.677Z",
+      "sql": "SELECT id,batch_number,stock_qty FROM rx_batches ORDER BY id",
+      "args": [],
+      "data": [
+        {
+          "id": 296,
+          "batch_number": "SMALL-158",
+          "stock_qty": 191
+        },
+        {
+          "id": 297,
+          "batch_number": "SMALL-159",
+          "stock_qty": 191
+        },
+        {
+          "id": 298,
+          "batch_number": "SMALL-160",
+          "stock_qty": 200
+        }
+      ]
+    },
+    {
+      "feature": "Purchase order receipt",
+      "phase": "AFTER",
+      "at": "2026-10-20T18:26:24.772Z",
+      "sql": "SELECT id,batch_number,stock_qty FROM rx_batches ORDER BY id",
+      "args": [],
+      "data": [
+        {
+          "id": 296,
+          "batch_number": "SMALL-158",
+          "stock_qty": 191
+        },
+        {
+          "id": 297,
+          "batch_number": "SMALL-159",
+          "stock_qty": 191
+        },
+        {
+          "id": 298,
+          "batch_number": "SMALL-160",
+          "stock_qty": 200
+        },
+        {
+          "id": 310,
+          "batch_number": "PROOF-RECEIPT",
+          "stock_qty": 4
+        }
+      ]
+    },
+    {
+      "feature": "Purchase order receipt",
+      "phase": "ROLLED BACK",
+      "at": "2026-10-20T18:26:24.805Z",
+      "sql": "SELECT id,batch_number,stock_qty FROM rx_batches ORDER BY id",
+      "args": [],
+      "data": [
+        {
+          "id": 296,
+          "batch_number": "SMALL-158",
+          "stock_qty": 191
+        },
+        {
+          "id": 297,
+          "batch_number": "SMALL-159",
+          "stock_qty": 191
+        },
+        {
+          "id": 298,
+          "batch_number": "SMALL-160",
+          "stock_qty": 200
+        }
+      ]
+    },
+    {
+      "feature": "Refill reminder",
+      "phase": "BEFORE",
+      "at": "2026-10-20T18:26:24.834Z",
+      "sql": "SELECT * FROM rx_refills",
+      "args": [],
+      "data": []
+    },
+    {
+      "feature": "Refill reminder",
+      "phase": "AFTER",
+      "at": "2026-10-20T18:26:24.860Z",
+      "sql": "SELECT * FROM rx_refills",
+      "args": [],
+      "data": [
+        {
+          "id": 82,
+          "prescription_item_id": 1118,
+          "next_refill_date": "2026-10-20",
+          "frequency_days": 7
+        }
+      ]
+    },
+    {
+      "feature": "Refill reminder",
+      "phase": "ROLLED BACK",
+      "at": "2026-10-20T18:26:24.890Z",
+      "sql": "SELECT * FROM rx_refills",
+      "args": [],
+      "data": []
+    },
+    {
+      "feature": "High dosage preview",
+      "phase": "BLOCKED",
+      "data": [
+        {
+          "severity": "INFO",
+          "reason": "Medicine information",
+          "notes": "Side effects are uncommon at recommended doses; rare serious allergic reactions. Overdose may cause severe liver damage. Avoid duplicate paracetamol products; lower limits may apply below 50 kg or with liver disease.",
+          "source_url": "https://www.nhs.uk/medicines/paracetamol-for-adults/"
+        },
+        {
+          "severity": "CRITICAL",
+          "reason": "High dosage",
+          "notes": "Maximum configured single dose 1000.00 mg; daily dose 4000.00 mg.",
+          "source_url": "https://www.nhs.uk/medicines/paracetamol-for-adults/"
+        }
+      ]
+    },
+    {
+      "feature": "Real medicine combination",
+      "phase": "BLOCKED",
+      "data": [
+        {
+          "severity": "INFO",
+          "reason": "Medicine information",
+          "notes": "Indigestion, stomach pain, nausea; serious risks include gastrointestinal bleeding, kidney injury and allergic reactions. Avoid with other NSAIDs or anticoagulants without prescriber review; use extra caution with ulcers, kidney disease and pregnancy.",
+          "source_url": "https://www.nhs.uk/medicines/ibuprofen-for-adults/"
+        },
+        {
+          "severity": "INFO",
+          "reason": "Medicine information",
+          "notes": "Bleeding, bruising; serious internal bleeding can occur. Dose is individually adjusted using INR monitoring; no general dose ceiling is supplied. Ibuprofen increases bleeding risk.",
+          "source_url": "https://www.nhs.uk/medicines/warfarin/"
+        },
+        {
+          "severity": "CRITICAL",
+          "reason": "Individual dosing review required",
+          "notes": "This medicine requires a patient-specific dose assessment. No general dosing profile is configured."
+        },
+        {
+          "severity": "CRITICAL",
+          "reason": "Configured interaction: Ibuprofen + warfarin: increased bleeding risk",
+          "notes": "High severity; includes current or recently prescribed medicines."
+        }
+      ]
+    },
+    {
+      "feature": "SQL trigger: allergy",
+      "phase": "BLOCKED",
+      "data": {
+        "sqlState": "45000",
+        "message": "Patient allergy or avoid instruction blocks dispensing"
+      }
+    },
+    {
+      "feature": "SQL trigger: avoid",
+      "phase": "BLOCKED",
+      "data": {
+        "sqlState": "45000",
+        "message": "Patient allergy or avoid instruction blocks dispensing"
+      }
+    },
+    {
+      "feature": "SQL trigger: dose",
+      "phase": "BLOCKED",
+      "data": {
+        "sqlState": "45000",
+        "message": "Missing structured adult dose or high dosage blocks dispensing"
+      }
+    },
+    {
+      "feature": "SQL trigger: flag",
+      "phase": "BLOCKED",
+      "data": {
+        "sqlState": "45000",
+        "message": "Configured patient flag blocks dispensing"
+      }
+    },
+    {
+      "feature": "SQL trigger: quantity",
+      "phase": "BLOCKED",
+      "data": {
+        "sqlState": "45000",
+        "message": "Rolling 30 day quantity limit exceeded"
+      }
+    },
+    {
+      "feature": "SQL trigger: interaction",
+      "phase": "BLOCKED",
+      "data": {
+        "sqlState": "45000",
+        "message": "High severity medicine combination blocks dispensing"
+      }
+    },
+    {
+      "feature": "SQL trigger: sports",
+      "phase": "BLOCKED",
+      "data": {
+        "sqlState": "45000",
+        "message": "Configured sports restriction: dispensing blocked for athlete"
+      }
+    },
+    {
+      "feature": "SQL trigger: warning",
+      "phase": "BLOCKED",
+      "data": {
+        "sqlState": "45000",
+        "message": "Patient warning requires recorded review notes"
+      }
+    },
+    {
+      "feature": "SQL SAVEPOINT",
+      "phase": "BEFORE / AFTER / ROLLBACK",
+      "data": {
+        "changed": [
+          {
+            "id": 296,
+            "stock_qty": 201
+          }
+        ],
+        "restored": [
+          {
+            "id": 296,
+            "stock_qty": 191
+          }
+        ]
+      }
+    },
+    {
+      "feature": "Dispense RX-619",
+      "phase": "BEFORE",
+      "at": "2026-10-20T18:19:37.344Z",
+      "sql": "SELECT id,status,(SELECT stock_qty FROM rx_batches WHERE id=?) stock FROM rx_prescriptions WHERE id=?",
+      "args": [
+        296,
+        619
+      ],
+      "data": [
+        {
+          "id": 619,
+          "status": "Pending Review",
+          "stock": 200
+        }
+      ]
+    },
+    {
+      "feature": "Dispense RX-619",
+      "phase": "AFTER",
+      "at": "2026-10-20T18:19:37.414Z",
+      "sql": "SELECT p.id,p.status,b.stock_qty,i.id invoice_id,i.net_payable FROM rx_prescriptions p JOIN rx_invoices i ON i.prescription_id=p.id JOIN rx_batches b ON b.id=? WHERE p.id=?",
+      "args": [
+        296,
+        619
+      ],
+      "data": [
+        {
+          "id": 619,
+          "status": "Dispensed",
+          "stock_qty": 191,
+          "invoice_id": 165,
+          "net_payable": "18.00"
+        }
+      ]
+    },
+    {
+      "feature": "Dispense RX-620",
+      "phase": "BEFORE",
+      "at": "2026-10-20T18:19:37.414Z",
+      "sql": "SELECT id,status,(SELECT stock_qty FROM rx_batches WHERE id=?) stock FROM rx_prescriptions WHERE id=?",
+      "args": [
+        297,
+        620
+      ],
+      "data": [
+        {
+          "id": 620,
+          "status": "Pending Review",
+          "stock": 200
+        }
+      ]
+    },
+    {
+      "feature": "Dispense RX-620",
+      "phase": "AFTER",
+      "at": "2026-10-20T18:19:37.455Z",
+      "sql": "SELECT p.id,p.status,b.stock_qty,i.id invoice_id,i.net_payable FROM rx_prescriptions p JOIN rx_invoices i ON i.prescription_id=p.id JOIN rx_batches b ON b.id=? WHERE p.id=?",
+      "args": [
+        297,
+        620
+      ],
+      "data": [
+        {
+          "id": 620,
+          "status": "Dispensed",
+          "stock_qty": 191,
+          "invoice_id": 166,
+          "net_payable": "27.00"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+USE remix_pharmrx;
+SELECT feature,phase,JSON_UNQUOTE(JSON_EXTRACT(details,'$.changed[0].stock_qty')) changed_stock,JSON_UNQUOTE(JSON_EXTRACT(details,'$.restored[0].stock_qty')) rolled_back_stock FROM rx_demo_evidence WHERE feature='SQL SAVEPOINT';

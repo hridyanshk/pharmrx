@@ -1,0 +1,272 @@
+{
+  "backup": "C:\\Users\\HRIDYANSH\\Downloads\\app\\evidence\\before-small-reset-1792520357936.json",
+  "prescriptions": [
+    {
+      "id": 619,
+      "patient_id": 252,
+      "medicine": {
+        "id": 158,
+        "batch": 296,
+        "dose": 500,
+        "frequency": 3,
+        "duration": 3,
+        "quantity": 9
+      }
+    },
+    {
+      "id": 620,
+      "patient_id": 253,
+      "medicine": {
+        "id": 159,
+        "batch": 297,
+        "dose": 200,
+        "frequency": 3,
+        "duration": 3,
+        "quantity": 9
+      }
+    },
+    {
+      "id": 621,
+      "patient_id": 254,
+      "medicine": {
+        "id": 160,
+        "batch": 298,
+        "dose": 10,
+        "frequency": 1,
+        "duration": 7,
+        "quantity": 7
+      }
+    },
+    {
+      "id": 622,
+      "patient_id": 255,
+      "medicine": {
+        "id": 158,
+        "batch": 296,
+        "dose": 500,
+        "frequency": 3,
+        "duration": 3,
+        "quantity": 9
+      }
+    },
+    {
+      "id": 623,
+      "patient_id": 256,
+      "medicine": {
+        "id": 159,
+        "batch": 297,
+        "dose": 200,
+        "frequency": 3,
+        "duration": 3,
+        "quantity": 9
+      }
+    },
+    {
+      "id": 624,
+      "patient_id": 257,
+      "medicine": {
+        "id": 160,
+        "batch": 298,
+        "dose": 10,
+        "frequency": 1,
+        "duration": 7,
+        "quantity": 7
+      }
+    },
+    {
+      "id": 625,
+      "patient_id": 258,
+      "medicine": {
+        "id": 158,
+        "batch": 296,
+        "dose": 500,
+        "frequency": 3,
+        "duration": 3,
+        "quantity": 9
+      }
+    },
+    {
+      "id": 626,
+      "patient_id": 259,
+      "medicine": {
+        "id": 159,
+        "batch": 297,
+        "dose": 200,
+        "frequency": 3,
+        "duration": 3,
+        "quantity": 9
+      }
+    },
+    {
+      "id": 627,
+      "patient_id": 260,
+      "medicine": {
+        "id": 160,
+        "batch": 298,
+        "dose": 10,
+        "frequency": 1,
+        "duration": 7,
+        "quantity": 7
+      }
+    },
+    {
+      "id": 628,
+      "patient_id": 261,
+      "medicine": {
+        "id": 158,
+        "batch": 296,
+        "dose": 500,
+        "frequency": 3,
+        "duration": 3,
+        "quantity": 9
+      }
+    },
+    {
+      "id": 629,
+      "patient_id": 252,
+      "medicine": {
+        "id": 159,
+        "batch": 297,
+        "dose": 200,
+        "frequency": 3,
+        "duration": 3,
+        "quantity": 9
+      }
+    },
+    {
+      "id": 630,
+      "patient_id": 253,
+      "medicine": {
+        "id": 160,
+        "batch": 298,
+        "dose": 10,
+        "frequency": 1,
+        "duration": 7,
+        "quantity": 7
+      }
+    },
+    {
+      "id": 631,
+      "patient_id": 254,
+      "medicine": {
+        "id": 158,
+        "batch": 296,
+        "dose": 500,
+        "frequency": 3,
+        "duration": 3,
+        "quantity": 9
+      }
+    },
+    {
+      "id": 632,
+      "patient_id": 255,
+      "medicine": {
+        "id": 159,
+        "batch": 297,
+        "dose": 200,
+        "frequency": 3,
+        "duration": 3,
+        "quantity": 9
+      }
+    },
+    {
+      "id": 633,
+      "patient_id": 256,
+      "medicine": {
+        "id": 160,
+        "batch": 298,
+        "dose": 10,
+        "frequency": 1,
+        "duration": 7,
+        "quantity": 7
+      }
+    },
+    {
+      "id": 634,
+      "patient_id": 257,
+      "medicine": {
+        "id": 158,
+        "batch": 296,
+        "dose": 500,
+        "frequency": 3,
+        "duration": 3,
+        "quantity": 9
+      }
+    },
+    {
+      "id": 635,
+      "patient_id": 258,
+      "medicine": {
+        "id": 159,
+        "batch": 297,
+        "dose": 200,
+        "frequency": 3,
+        "duration": 3,
+        "quantity": 9
+      }
+    },
+    {
+      "id": 636,
+      "patient_id": 259,
+      "medicine": {
+        "id": 160,
+        "batch": 298,
+        "dose": 10,
+        "frequency": 1,
+        "duration": 7,
+        "quantity": 7
+      }
+    },
+    {
+      "id": 637,
+      "patient_id": 260,
+      "medicine": {
+        "id": 158,
+        "batch": 296,
+        "dose": 500,
+        "frequency": 3,
+        "duration": 3,
+        "quantity": 9
+      }
+    },
+    {
+      "id": 638,
+      "patient_id": 261,
+      "medicine": {
+        "id": 159,
+        "batch": 297,
+        "dose": 200,
+        "frequency": 3,
+        "duration": 3,
+        "quantity": 9
+      }
+    }
+  ],
+  "medicines": [
+    {
+      "id": 158,
+      "batch": 296,
+      "dose": 500,
+      "frequency": 3,
+      "duration": 3,
+      "quantity": 9
+    },
+    {
+      "id": 159,
+      "batch": 297,
+      "dose": 200,
+      "frequency": 3,
+      "duration": 3,
+      "quantity": 9
+    },
+    {
+      "id": 160,
+      "batch": 298,
+      "dose": 10,
+      "frequency": 1,
+      "duration": 7,
+      "quantity": 7
+    }
+  ],
+  "created_at": "2026-10-20T18:19:18.007Z"
+}
