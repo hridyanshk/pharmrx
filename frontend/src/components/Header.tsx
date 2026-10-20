@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, Bell, Menu, Sun, Moon, User, LogOut, ShieldCheck, Stethoscope, Database, RefreshCw } from 'lucide-react';
+import { Search, Bell, Menu, Sun, Moon, User, ShieldCheck, Stethoscope, Database, RefreshCw, Sparkles } from 'lucide-react';
 import { CurrentUser } from '../types/pharmacy';
 
 interface HeaderProps {
@@ -13,7 +13,7 @@ interface HeaderProps {
   onToggleTheme: () => void;
   currentUser: CurrentUser;
   onNavigateToProfile: () => void;
-  onLogout: () => void;
+  onOpenSwitchView: () => void;
   apiConnected?: boolean | null;
   isSyncingData?: boolean;
   onRefreshData?: () => void;
@@ -31,7 +31,7 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleTheme,
   currentUser,
   onNavigateToProfile,
-  onLogout,
+  onOpenSwitchView,
   apiConnected = null,
   isSyncingData = false,
   onRefreshData,
@@ -215,12 +215,12 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   onClick={() => {
                     setProfileMenuOpen(false);
-                    onLogout();
+                    onOpenSwitchView();
                   }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-[#273449] transition-colors text-left cursor-pointer font-medium"
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-[#1E293B] transition-colors text-left cursor-pointer font-medium"
                 >
-                  <LogOut className="w-3.5 h-3.5" />
-                  <span>Logout</span>
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Switch View</span>
                 </button>
               </div>
             </div>
