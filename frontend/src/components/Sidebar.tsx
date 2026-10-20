@@ -7,7 +7,7 @@ import {
   FileText,
   Package,
   BarChart3,
-  Sparkles,
+  LogOut,
   X,
   ChevronLeft,
   ChevronRight,
@@ -24,7 +24,7 @@ interface SidebarProps {
   currentRoute: NavRoute;
   onRouteChange: (route: NavRoute) => void;
   hasInventoryAlert?: boolean;
-  onOpenSwitchView: () => void;
+  onLogout: () => void;
   mobileOpen?: boolean;
   onCloseMobile?: () => void;
   isCollapsed: boolean;
@@ -36,7 +36,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   currentRoute,
   onRouteChange,
   hasInventoryAlert = false,
-  onOpenSwitchView,
+  onLogout,
   mobileOpen = false,
   onCloseMobile,
   isCollapsed,
@@ -253,24 +253,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
             {!isCollapsed && (
               <button
-                onClick={onOpenSwitchView}
-                className="p-1.5 text-slate-400 hover:text-teal-600 dark:text-[#CBD5E1] dark:hover:text-[#2DD4BF] hover:bg-teal-50 dark:hover:bg-[#273449] rounded-lg transition-colors cursor-pointer"
-                title="Switch View"
+                onClick={onLogout}
+                className="p-1.5 text-slate-400 hover:text-rose-600 dark:text-[#CBD5E1] dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-[#273449] rounded-lg transition-colors cursor-pointer"
+                title="Logout"
               >
-                <Sparkles className="w-4 h-4" />
+                <LogOut className="w-4 h-4" />
               </button>
             )}
           </div>
 
-          {/* In collapsed mode, separate switch view button */}
+          {/* In collapsed mode, separate logout button */}
           {isCollapsed && (
             <div className="flex justify-center pt-2">
               <button
-                onClick={onOpenSwitchView}
-                className="p-2 text-slate-400 hover:text-teal-600 dark:text-[#CBD5E1] dark:hover:text-[#2DD4BF] hover:bg-teal-50 dark:hover:bg-[#273449] rounded-lg transition-colors cursor-pointer"
-                title="Switch View"
+                onClick={onLogout}
+                className="p-2 text-slate-400 hover:text-rose-600 dark:text-[#CBD5E1] dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-[#273449] rounded-lg transition-colors cursor-pointer"
+                title="Logout"
               >
-                <Sparkles className="w-4 h-4" />
+                <LogOut className="w-4 h-4" />
               </button>
             </div>
           )}
