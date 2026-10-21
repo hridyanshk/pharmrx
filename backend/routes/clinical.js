@@ -20,6 +20,15 @@ router.post('/login',async(req,res)=>{
  if(!process.env.JWT_SECRET)fail('Server sign-in configuration is missing.',503);attempts.delete(key);
  res.json({token:jwt.sign({id:u.id},process.env.JWT_SECRET,{expiresIn:'8h'}),user:{id:u.id,name:u.name,email:u.email,role:u.role}});
 });
+// This college demo deliberately offers public staff views without account sign-in.
+// Resolve only the seeded identities; clients cannot choose an arbitrary user ID.
+router.post('/workspace-session',async(req,res)=>{
+ const role=choice(req.body.role,['admin','pharmacist'],'workspace view');
+ const u=await one('SELECT id,name,email,role FROM users WHERE email=? AND role=?',[`${role}@pharmrx.local`,role]);
+ if(!u)fail('This workspace is not ready. Run the database setup first.',503);
+ if(!process.env.JWT_SECRET)fail('Workspace session configuration is missing.',503);
+ res.json({token:jwt.sign({id:u.id},process.env.JWT_SECRET,{expiresIn:'8h'}),user:u});
+});
 router.use(async(req,res,next)=>{try{const token=req.headers.authorization?.match(/^Bearer (.+)$/)?.[1];if(!token)fail('Please sign in.',401);let data;try{data=jwt.verify(token,process.env.JWT_SECRET);}catch{fail('Your session expired. Please sign in again.',401);}const u=await one('SELECT id,name,email,role FROM users WHERE id=?',[data.id]);if(!u)fail('Account not found.',401);req.user=u;next();}catch(e){next(e);}});
 router.get('/bootstrap',async(req,res)=>{
  const patient=req.user.role==='patient'?await one('SELECT * FROM rx_patients WHERE user_id=?',[req.user.id]):null;

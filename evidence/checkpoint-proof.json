@@ -1,19 +1,19 @@
 {
   "passed": true,
   "five_prescriptions": {
-    "id": 93,
+    "id": 100,
     "reason": "5 prescriptions",
     "saved_prescriptions": 25
   },
   "thirty_minutes": {
-    "id": 94,
+    "id": 101,
     "reason": "30 minutes",
     "method": "Advanced checkpoint timestamp by 31 minutes; invoked the same automatic routine as the server timer."
   },
   "restore": {
     "ok": true,
-    "restored": 92,
-    "recovery_checkpoint": 95,
+    "restored": 99,
+    "recovery_checkpoint": 102,
     "records": 12
   },
   "final_prescriptions": 20

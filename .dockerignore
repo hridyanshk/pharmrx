@@ -4,7 +4,11 @@
 **/*.log
 frontend/dist
 .git
+.vite
+*.zip
+submission
 design-previews
 setup-app-user.sql
 hosting-*.png
+hosting-*.jpg
 pharmrx-preview.jpg

@@ -21,7 +21,7 @@ const canonical=value=>JSON.stringify(stable(value));
 const comparable=(table,row)=>table==='rx_patients'&&row&&!Object.hasOwn(row,'requires_full_profile')?{...row,requires_full_profile:0}:row;
 async function snapshot(c){const result={};for(const table of tables){const [rows]=await c.query(table==='users'?'SELECT id,name,email,role FROM users':`SELECT * FROM \`${table}\``);result[table]=new Map(rows.map(r=>[r.id,r]));}return result;}
 function differences(before,after){const changes=[];for(const table of tables)for(const id of new Set([...before[table].keys(),...after[table].keys()])){const a=before[table].get(id)||null,b=after[table].get(id)||null;if(canonical(a)!==canonical(b))changes.push({table,id,before:a,after:b});}return changes;}
-const excluded=new Set(['/login','/pos/preview','/safety/check','/undo','/checkpoints','/safety/install-triggers']);
+const excluded=new Set(['/login','/workspace-session','/pos/preview','/safety/check','/undo','/checkpoints','/safety/install-triggers']);
 const isMutation=(method,path)=>['POST','PUT','PATCH','DELETE'].includes(method)&&!excluded.has(path)&&!path.startsWith('/undo/')&&!path.startsWith('/checkpoints/');
 function labelFor(req){const p=req.path;
  if(p==='/maintenance/clean-sample-data')return 'Clean sample record labels';
