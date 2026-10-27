@@ -57,7 +57,7 @@ body{background:#000}
 .pw-app .issue-modal .rx-modal-footer{background:#101010}
 .pw-app :is(.issue-patient-bar select,.issue-med-choice select,.issue-review-notes textarea){background:#0b0b0b!important;color:var(--dash-ink)!important}
 .pw-app .issue-quantity button{background:var(--yellow);color:#111112}.pw-app .issue-quantity button:hover{background:#e0ff52}
-.pw-app .issue-total{background:var(--yellow);color:#111112}.pw-app .issue-total :is(small,summary){color:#35400f!important}
+.pw-app .issue-total{background:#191a18!important;border:1px solid #34372c!important;border-radius:16px!important;color:#f4f4ed!important;box-shadow:none!important}.pw-app .issue-total :is(small,summary,details span){color:#b4b8a5!important}.pw-app .issue-total>div>small{color:#b4b8a5!important;font-size:11px!important;letter-spacing:1.5px!important;font-weight:700!important;display:block}.pw-app .issue-total strong{color:var(--yellow,#d2ff00)!important;font-size:32px!important;font-weight:800!important;line-height:1.2!important;margin-top:4px}
 .pw-app .issue-check-strip.ready{background:#202a1a;color:#c4dea0;border-color:#3c512b}
 .pw-app .issue-check-strip.blocked,.pw-app .issue-special-panel.critical{background:#341b17;color:#ffb6a4;border-color:#754338}
 .pw-app .issue-special-panel>h3,.pw-app .issue-special-panel.critical>h3{color:inherit}
