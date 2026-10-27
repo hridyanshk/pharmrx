@@ -33,6 +33,34 @@ body{background:#eee2c7}
 .ap-sign:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 30%,#fff2cf25 49%,transparent 65%);background-size:300% 100%;background-position:100% 0;opacity:0;transition:background-position .8s,opacity .4s}.ap-sign:hover:after{background-position:0 0;opacity:1}
 .ap-view-switch{display:flex;border:1px solid #a7844e;padding:3px;margin-right:auto;background:#e5d1a6;gap:3px}.ap-view-switch button{border:0;background:transparent;color:#1b4c55;padding:8px 15px;font-size:18px}.ap-view-switch button[aria-pressed=true]{background:#1d6470;color:#fff0cf;box-shadow:0 2px 0 #123b4a}.ap-cabinet-hint{font-size:16px;color:#766747}.ap-medicine-cabinet{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:25px;padding:25px;background:#194951;border:5px double #c6a160;box-shadow:inset 0 0 0 5px #11343d}.ap-medicine-tile .ap-flip{height:235px}.ap-medicine-tile .ap-face{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:8px;padding:22px;text-align:left}.ap-medicine-tile .ap-front .ap-motif{position:absolute;width:67px;height:67px;right:13px;top:14px;border:2px solid #bf955a;transform:rotate(4deg);opacity:.9}.ap-medicine-tile .ap-front>b{font:22px Bowlby;max-width:calc(100% - 65px)}.ap-medicine-tile .ap-front>span{font-size:17px}.ap-medicine-tile .ap-front strong{font-size:32px}.ap-medicine-tile .ap-front strong small{position:static;font:16px Cossette;color:#686749}.ap-medicine-tile .ap-back b{font:24px Cossette;color:#f4d497}.ap-medicine-tile .ap-back>span{font-size:18px}.ap-stat-caption{padding:5px;text-align:center;font-size:14px;background:#ddc598}.ap-medicine-tile .ap-stat-link{background:#d7bd89;padding:8px;font-size:16px!important}
 @media(max-width:1100px){.ap-medicine-cabinet{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* 12-Module Categorized Ledger Hub */
+.ap-hub-section{margin:32px 0 28px;background:#fbf5e6;border:4px double #c8a364;border-radius:4px;padding:26px 22px 28px;box-shadow:inset 0 0 0 1px #dfcc9e,0 5px 16px #291c1214}
+.ap-hub-header{text-align:center;margin-bottom:22px}
+.ap-hub-header .ap-ribbon{margin:0 auto 10px;max-width:580px}
+.ap-hub-header p{font:18px Cossette,sans-serif;color:#5c6c6b;margin:6px 0 0}
+.ap-hub-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+@media(max-width:1100px){.ap-hub-grid{grid-template-columns:1fr}}
+.ap-hub-group{background:#fff9ea;border:1px solid #d8be92;border-top:5px solid #165b63;border-radius:4px;padding:18px 16px 20px;display:flex;flex-direction:column}
+.ap-hub-group:nth-child(2){border-top-color:#8c3227}
+.ap-hub-group:nth-child(3){border-top-color:#a4783b}
+.ap-hub-group-header{margin-bottom:14px;border-bottom:1px solid #e5d1a8;padding-bottom:10px}
+.ap-hub-group-header .rx-kicker{font-size:11px;color:#8a6c3f;letter-spacing:1.3px;display:block}
+.ap-hub-group-header h3{font:700 22px Cossette,serif;color:#123b4a;margin:4px 0 0}
+.ap-hub-cards{display:grid;gap:10px;flex:1}
+.ap-hub-card{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;text-align:left;border:1px solid #dfcba5;border-radius:3px;background:#fbf5e5;color:#133c48;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s;cursor:pointer}
+.ap-hub-card:hover{background:#fffbf1;border-color:#8c3227;transform:translateY(-2px);box-shadow:0 4px 10px #1a3c4214}
+.ap-hub-card-icon{width:38px;height:38px;flex:none;display:grid;place-items:center;border:1px solid #c9a76d;background:#f4e8ce;border-radius:3px}
+.ap-hub-card-icon .ap-motif{width:26px;height:26px}
+.ap-hub-card-body{flex:1;min-width:0}
+.ap-hub-card-body strong{display:block;font:700 17px Cossette,sans-serif;color:#133c48;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ap-hub-card-body small{display:block;font-size:13px;color:#657471;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ap-hub-card-action{display:flex;align-items:center;gap:8px;flex:none}
+.ap-hub-badge{font-size:12px;padding:3px 8px;border-radius:3px;background:#ecddba;color:#4a3c22;border:1px solid #d4be92;font-weight:600}
+.ap-hub-card.urgent .ap-hub-badge{background:#f5dcd0;color:#8f2b21;border-color:#b96a58}
+.ap-hub-card.warning .ap-hub-badge{background:#f5e4be;color:#7a4b13;border-color:#b79048}
+.ap-hub-card.ready .ap-hub-badge{background:#e4eee4;color:#245738;border-color:#8bb395}
+
 @media(max-width:760px){.ap-medicine-cabinet{grid-template-columns:1fr;padding:17px;gap:22px}.ap-medicine-tile .ap-front small{position:absolute;right:15px;bottom:10px;font-size:12px}.ap-medicine-tile .ap-front strong small{position:static;font-size:16px}.ap-medicine-tile .ap-back small{display:block}.ap-view-switch button{font-size:17px;padding:7px 13px}}
 .rx-app[data-theme=blue] .ribbon-cloth{fill:#206878}.rx-app[data-theme=blue] .ribbon-tail{fill:#123f51}.rx-app[data-theme=blue] .ap-ribbon.cream .ribbon-cloth{fill:#f0dcad}.rx-app[data-theme=blue] .ap-ribbon.cream .ribbon-tail{fill:#dbc094}.rx-app[data-theme=blue] nav button.active{background:#277b85;box-shadow:inset 0 0 0 2px #164d59,0 3px 0 #081f25}
 @media(prefers-reduced-motion:reduce){.rx-app *,.rx-login *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}

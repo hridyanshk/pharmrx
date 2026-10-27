@@ -1,0 +1,24 @@
+{
+  "models": [
+    {
+      "name": "gemma4-local:12b-64k-test",
+      "model": "gemma4-local:12b-64k-test",
+      "size": 8789080141,
+      "digest": "2f318a300d49891007e29ad65d4998dc550c693640c85fbfd8ba7bc8a9fc0e10",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "gemma4",
+        "families": [
+          "gemma4"
+        ],
+        "parameter_size": "11.9B",
+        "quantization_level": "Q4_K_M"
+      },
+      "expires_at": "2026-10-21T21:13:31.3998198+05:30",
+      "size_vram": 5792826652,
+      "context_length": 65536,
+      "runner": "llamacpp"
+    }
+  ]
+}

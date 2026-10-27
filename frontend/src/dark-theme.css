@@ -1,0 +1,77 @@
+/* Norris-inspired black and fluorescent yellow-green (#D2FF00 from landonorris.com). Shared by every workspace, form and dialog. */
+:root{color-scheme:dark;--yellow:#d2ff00;--black:#111112;--raised:#23251f}
+body{background:#000}
+.rx-app.pw-app,.rx-login.rx-view-picker{--surface:#191a18;--wood:#000;--accent:#d2ff00;box-shadow:0 20px 80px #0008}
+.rx-app.pw-app{border-color:#282825}
+.rx-app.pw-app aside{background:#000;border:1px solid #282825}
+.pw-app .dash-brand{background:#22280e;color:var(--yellow)}
+.pw-app nav button{color:#b4b8a5}.pw-app nav button.active,.pw-app nav button:hover,.pw-app nav button.active:hover{background:var(--yellow);color:#111112}
+.pw-app .dash-switch{color:#d3d0c7}.pw-app .dash-avatar{background:var(--yellow);color:#111112}
+.pw-app :is(.rx-header-actions .rx-icon-button,.rx-search,.dash-page-tabs>button,.dash-section-title select,.pw-secondary,.pw-more,.pw-pagination>button,.issue-more-tools button){background:var(--raised);color:var(--dash-ink);border-color:var(--dash-line)}
+.pw-app .dash-page-tabs>button[aria-current=page],.pw-app .dash-page-tabs>button:hover{background:var(--yellow);color:#111112}
+.pw-app .dash-title-accent{background:var(--yellow);color:#111112}
+.pw-app :is(.rx-button,.pw-primary){background:var(--yellow);border-color:var(--yellow);color:#111112}
+.pw-app :is(.rx-button,.pw-primary):hover{background:#e0ff52;border-color:#e0ff52;color:#111112}
+.pw-app :is(.rx-button,.pw-primary):active{background:#b2d900;box-shadow:none}
+.pw-app button:focus-visible,.rx-view-picker button:focus-visible{outline-color:var(--yellow)}
+.pw-app :is(input,select,textarea){background:#0b0b0b;color:var(--dash-ink);border-color:#3b3b35;accent-color:var(--yellow)}
+.pw-app :is(input,select,textarea):focus{outline-color:var(--yellow)}
+.pw-app input::placeholder,.pw-app textarea::placeholder{color:#99998f}
+.pw-app .rx-search input{background:transparent}
+.pw-app .dash-icon{background:#242423;color:var(--yellow)}
+.pw-app .dash-card.lime{background:var(--yellow);color:#111112}
+.pw-app .dash-card.lime .dash-icon{background:#fff6;color:#111112}
+.pw-app .dash-card.lime :is(small,.dash-caption){color:#3a450b}
+.pw-app .dash-value small,.pw-app .dash-caption{color:#b0afa5}
+.pw-app .dash-meter i{border-color:#4d4d43}.pw-app .dash-meter i.filled{background:var(--yellow);border-color:var(--yellow)}
+.pw-app .lime .dash-meter i{border-color:#7a911f}.pw-app .lime .dash-meter i.filled{background:#13130e;border-color:#13130e}
+.pw-app button.dash-card:hover{box-shadow:inset 0 0 0 1px #68774a}
+.pw-app .dash-callout{background:#191d12;border:1px solid #414b23;color:var(--dash-ink)}
+.pw-app .dash-callout h2{color:var(--dash-ink)}.pw-app .dash-callout::after{border-color:#d2ff0055;box-shadow:0 0 0 20px #d2ff000a,0 0 0 40px #d2ff0005}
+.pw-app .dash-callout button{background:var(--yellow);color:#111112}
+.pw-app .dash-legend{color:#b6b4aa}.pw-app .dash-legend span::before{background:#f4f4ed}.pw-app .dash-legend span:last-child::before{background:var(--yellow)}
+.pw-app .dash-columns{background-image:repeating-linear-gradient(to top,transparent 0,transparent 49px,#ffffff0c 49px,#ffffff0c 50px)}
+.pw-app .dash-axis{color:#b4b8a5}.pw-app .dash-bars i{background:#eeece1}.pw-app .dash-bars i.issued{background:var(--yellow)}
+.pw-app .dash-chart-tooltip{background:var(--yellow);color:#111112}
+.pw-app .dash-count{background:var(--yellow);color:#111112}
+.pw-app .dash-tools>button:hover{background:#22280e;box-shadow:inset 0 0 0 1px #586923}
+.pw-app :is(.rx-table-wrap,.pw-suggestions,.pw-quick-picks>button,.pw-search-field,.pw-search-page .pw-search-field){background:#111;color:var(--dash-ink);border-color:var(--dash-line)}
+.pw-app .rx-table-wrap th{background:#1c1c19;color:#b8b6a9}
+.pw-app .rx-table-wrap tbody tr:nth-child(even){background:#171715}.pw-app .rx-table-wrap tbody tr:hover{background:#282512}
+.pw-app .rx-modal{background:#101010;border-color:#37352b;box-shadow:0 25px 100px #000b}
+.pw-app .rx-modal-overlay,.pw-app .pw-save-overlay{background:#000b}
+.pw-app :is(.rx-note,.rx-safety,.issue-special-panel){background:#22280e;color:#d5dfa5;border-color:#4e5b22}
+.pw-app :is(.rx-status,.pw-badge.green){background:#202a1a;color:#c4dea0;border-color:#3c512b}
+.pw-app :is(.rx-status.warning,.pw-badge.amber){background:#252c10;color:#dcff4d;border-color:#4e5b22}
+.pw-app :is(.rx-status.danger,.pw-badge.red,.rx-error){background:#341b17;color:#ffb6a4;border-color:#754338}
+.pw-app .rx-notice{background:#242a17;color:#d9e5aa;border-color:#4e5a2c}
+.pw-app :is(.pw-tabs>button,.ap-view-switch button){background:#22221e;color:var(--dash-ink)}
+.pw-app :is(.pw-tabs>button,.ap-view-switch button)[aria-pressed=true]{background:var(--yellow);color:#111112}
+.pw-app .pw-quick-picks>button.selected{background:#252c10;color:#dcff4d;border-color:#586923}
+.pw-app .pw-suggestions>button{color:var(--dash-ink)}.pw-app .pw-suggestions>button:hover,.pw-app .pw-suggestions>button[aria-selected=true]{background:#252c10}
+.pw-app :is(.pw-issue-lines>div,.issue-quantity>div,.issue-special-toggle){background:#1c1c19;color:var(--dash-ink);border-color:var(--dash-line)}
+.pw-app :is(.pw-pill-icon,.pw-alert-icon){background:#252c10;color:#dcff4d}.pw-app .pw-urgent .pw-alert-icon{background:#341b17;color:#ffb6a4}
+.pw-app .pw-monitor-metrics>button:nth-child(2){background:#252c10}.pw-app .pw-monitor-metrics>button>svg{color:var(--yellow)}
+.pw-app :is(.ledger-medicine-notes a,.ledger-side-effects a,.rx-safety a,summary,.pw-notes summary,.pw-stock-card summary){color:#dcff4d}
+.pw-app .rx-modal.issue-modal{background:#101010!important;border-color:#37352b!important}
+.pw-app .issue-modal .rx-modal-footer{background:#101010}
+.pw-app :is(.issue-patient-bar select,.issue-med-choice select,.issue-review-notes textarea){background:#0b0b0b!important;color:var(--dash-ink)!important}
+.pw-app .issue-quantity button{background:var(--yellow);color:#111112}.pw-app .issue-quantity button:hover{background:#e0ff52}
+.pw-app .issue-total{background:var(--yellow);color:#111112}.pw-app .issue-total :is(small,summary){color:#35400f!important}
+.pw-app .issue-check-strip.ready{background:#202a1a;color:#c4dea0;border-color:#3c512b}
+.pw-app .issue-check-strip.blocked,.pw-app .issue-special-panel.critical{background:#341b17;color:#ffb6a4;border-color:#754338}
+.pw-app .issue-special-panel>h3,.pw-app .issue-special-panel.critical>h3{color:inherit}
+.pw-app .issue-check-strip button,.pw-app .issue-care-flags>span{background:#242423;color:var(--dash-ink)}
+.pw-app :is(.issue-special-toggle input,.issue-ack input){accent-color:var(--yellow)}
+.pw-app .ap-back{background:#252c10;color:var(--dash-ink)}
+.pw-app .pw-search-field>button{background:#292924;color:var(--dash-ink)}
+.pw-app :is(.pw-skeleton-stats>div,.pw-skeleton-columns>section,.pw-skeleton-search,.pw-skeleton-item){background:#191a18;border-color:#34372c}
+.pw-app .pw-skeleton :is(i,b){background:linear-gradient(100deg,#20201c 30%,#303027 45%,#20201c 60%);background-size:220% 100%}
+.rx-view-picker .rx-login-brand{background:#000;border:1px solid #34372c}
+.rx-view-picker .rx-login-brand h1{color:#f4f4ed}.rx-view-picker .rx-login-brand h1 em{color:var(--yellow)}
+.rx-view-picker .rx-login-brand p,.rx-view-picker .rx-login-brand small,.rx-view-picker .dash-login-tag{color:#b4b8a5}
+.rx-view-picker .dash-login-symbols svg{border-color:#4e5b22;color:var(--yellow)}
+.rx-login.rx-view-picker .rx-view-option,.rx-login.rx-view-picker .rx-view-option:nth-child(2){background:#181816;color:var(--dash-ink);border-color:#32322b}
+.rx-login.rx-view-picker .rx-view-option:hover{background:#252c10;border-color:#718529}
+.rx-view-picker .rx-error{background:#341b17;color:#ffb6a4;border-color:#754338}
+@media print{:root{color-scheme:light}.pw-app .rx-modal,.pw-app .rx-print-invoice,.pw-app .rx-print-invoice *{background:white!important;color:black!important;border-color:#ccc!important}.pw-app .rx-modal-overlay{background:white}}

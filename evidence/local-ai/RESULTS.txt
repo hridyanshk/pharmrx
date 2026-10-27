@@ -1,0 +1,94 @@
+UPDATED STATUS — October 21, 2026
+The earlier editing blocker is resolved using MXC. The local configuration now
+uses 65,536 context tokens and compacts at 48,000. MXC startup and workspace writes
+passed without administrator setup or Windows permission changes. Gemma through
+Codex reproduced the injected defect, edited the fixture, and passed all 4 tests.
+An independent default Node test run also passed 4/4. Original-file hashes remain
+unchanged. The short 64K benchmark measured about 9.18 tokens/second; this verifies
+allocation and a short response, not a fully populated 64K context. See RESULTS.md
+for the current configuration and evidence.
+
+HISTORICAL INITIAL REPORT (superseded where noted above)
+Local AI setup result — 2026-10-21
+
+Completed:
+- Ollama 0.40.7 and Codex CLI 0.163.0 were already installed.
+- Downloaded and checksum-verified gemma4:12b, digest 6114515d63c1,
+  11.9B parameters, Q4_K_M, approximately 8.0 GB installed.
+- Created gemma4-local:12b-32k; shares downloaded weights.
+- Configured a separate loopback-only Ollama server on port 11435.
+- Created a project-local Codex launcher and config. Existing ~/.codex/config.toml
+  and the normal Ollama server/settings were preserved.
+- Verified native inference: LOCAL_MODEL_OK; final short warm benchmark about
+  10.48 generated tokens/second. This is a six-token microbenchmark, not a
+  representative full coding throughput measurement. Tool workflow observed
+  roughly 7.5–10 tokens/second.
+
+Final runtime settings:
+32768 context tokens; auto-compaction at 24000; Flash Attention; q8_0 KV cache;
+one request and one model; batch 128; speculative draft decoding disabled;
+512 MiB prompt-cache cap; two context checkpoints; five-minute idle unload.
+Native generation defaults to 2048 tokens and temperature 0.2. Codex may override
+these values. Codex thinking effort none; connectors, remote plugin catalog, and
+web search disabled. Compact coding instructions include Windows shell guidance.
+Server log confirms both cache limits and 36/49 layers offloaded to the GPU.
+Final runtime allocation: approximately 8.65 GB total, 5.94 GB VRAM. The remainder
+uses host memory; this is partial CPU/GPU inference. Background graphics and
+application memory are additional. Actual context allocation was confirmed 32768.
+
+Coding capability test:
+- Original frontend tests: PASS, 3/3 before and after setup.
+- Fixture: COPY of the real frontend utility module and tests, with subtraction
+  deliberately replaced by addition. Added one regression test. Initial result:
+  2 pass, 2 fail. This is an injected defect, not a newly discovered project bug.
+- Inspection through local Gemma + Codex: PASS, actual file reads observed.
+- Test execution through local Gemma + Codex: PASS with --test-isolation=none;
+  reproduced the intended assertion failures. Default Node test isolation hit
+  spawn EPERM under the Windows sandbox.
+- Editing: NOT VERIFIED SUCCESSFULLY. Initial attempts failed due to PowerShell
+  quoting and a nonexistent apply_patch.ps1 command. After explicit shell guidance,
+  direct PowerShell write attempts were denied by the Windows unelevated sandbox.
+- Stopped the failing retry loop. No successful repair or passing fixture retest
+  is claimed. The fixture intentionally retains the failing stock calculation.
+- Backend/database integration tests were not run because they mutate database
+  data. This test does not establish full application or database competence.
+
+Preservation:
+preservation-check.json confirms unchanged hashes for both pre-existing modified
+CSS files and the original frontend utility/test files. Original tests pass.
+Only new setup/evidence files were added under evidence/local-ai, plus requested
+models/aliases in the Ollama user cache. No global environment, PATH, services,
+startup configuration, drivers, pagefile, Windows ACLs, or existing Codex settings
+were changed.
+
+Limitations:
+- Editing is currently blocked by the Windows sandbox. Completing a writable
+  setup may require the supported elevated sandbox setup/repair and approval
+  before system or permission changes. Protections were not bypassed.
+- Model tool use was unreliable in the unguided edit attempt. Review edits and
+  verify tests; do not rely on this model for unattended coding.
+- 32K is below Ollama's 64K recommendation for Codex. The initial 8K context
+  compacted too early. Enabling connector tools inflated the prompt to about
+  114K tokens; disabling them reduced it to approximately 5K.
+- Codex logs model-list decoding and fallback metadata warnings for this alias.
+  Local inference and shell calls still worked; compatibility is imperfect.
+- Speculative decoding made the initial microbenchmark extremely slow (~0.7
+  tokens/second); disabling it improved the result to around 10 tokens/second.
+- Performance and memory depend on background apps, laptop power/thermal limits,
+  prompt size, and CPU offloading. Close unused apps yourself when RAM is low.
+
+Launch from the project root:
+  .\evidence\local-ai\start-codex.ps1
+
+If the launcher cannot start the isolated server automatically, run this in one
+PowerShell terminal, keep it open, then run the launcher in a second terminal:
+  .\evidence\local-ai\serve.ps1
+
+Files:
+config.toml / serve.ps1 / Modelfile — reproducible runtime settings
+benchmark.json / allocation.json — final native inference evidence
+model-test-events.log / guided-edit-events.log — last local Codex workflow
+unguided-edit-events.log / thinking-enabled-events.log — earlier failed attempts
+preservation-check.json — source-file hash preservation check
+README.txt — operation and official documentation links
+

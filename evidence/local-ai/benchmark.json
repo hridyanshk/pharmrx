@@ -1,0 +1,17 @@
+{
+  "model": "gemma4-local:12b-32k",
+  "created_at": "2026-10-21T14:47:03.5659648Z",
+  "message": {
+    "role": "assistant",
+    "content": "LOCAL_MODEL_OK"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 1035474800,
+  "load_duration": 4744600,
+  "prompt_eval_count": 22,
+  "prompt_eval_cached_count": 0,
+  "prompt_eval_duration": 455613000,
+  "eval_count": 6,
+  "eval_duration": 572573000
+}

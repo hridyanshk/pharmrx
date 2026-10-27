@@ -1,0 +1,14 @@
+The stock calculation regression in `frontend/src/workspace-data.mjs` was identified and fixed.
+
+### Changes:
+- Modified the `available` constant to subtract `reserved_qty` from `stock_qty` instead of adding it.
+
+### Test Results:
+- **Initial Run**: 2 passes, 2 fails (including the regression test).
+- **Final Run**: 4 passes, 0 fails.
+
+```powershell
+# Summary of change in frontend/src/workspace-data.mjs
+- export const available = medicine => Number(medicine.stock_qty || 0) + Number(medicine.reserved_qty || 0);
++ export const available = medicine => Number(medicine.stock_qty || 0) - Number(medicine.reserved_qty || 0);
+```
